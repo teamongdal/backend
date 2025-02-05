@@ -1,0 +1,14 @@
+fastapi[all]
+torch
+torchvision
+pyyaml
+opencv-python
+sqlalchemy[asyncio]
+aiomysql 
+asyncpg
+numpy
+uvicorn 
+alembic 
+psycopg2 
+pymysql
+pydantic
