@@ -1,12 +1,20 @@
 backend 사용 방법 (Python 3.13.2 사용 - 다른 버전도 문제없는지 모름)
 
 0. 패치 노트 (Patch Notes):
-업데이트 할 예정:
-product db 업데이트:
+!! 업데이트 할 예정 !!
+(a) product db 업데이트:
     (삭제) detail / detail_url
     (추가) 상품 추가 사진
 
-backend 함수 return에서 message삭제, JSON만 돌려주기 업데이트
+(b) backend 함수 return에서 message삭제, JSON만 돌려주기 업데이트
+
+(c) FE / BE API 맞추고 return type sync 작업
+
+(d) AI 모델 sync
+
+(e) @app.get("/api/similar_product_list") -> 모든 상품에서 유사 상품 return
+
+
 
 1. 주요 파일 설명:
 requirement.txt -- python3.13.1 / 
