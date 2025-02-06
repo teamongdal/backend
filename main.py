@@ -29,10 +29,11 @@ import torch
 import cv2
 import numpy as np
 from pathlib import Path
-from config import CONFIG
-from model import build_model
-from utils import non_max_suppression, scale_coords, xyxy2xywh
-from data import letterbox
+# from config import CONFIG
+# from model import build_model
+# from utils import non_max_suppression, scale_coords, xyxy2xywh
+# from data import letterbox
+from typing import List, Optional
 import random
 from sqlalchemy.orm import Session
 from database import SessionLocal, Video, Favorite, Product, Highlight  # Import the database session and model
@@ -159,19 +160,19 @@ app.add_middleware(
 
 # SIMPLE LOCAL DB METHOD -> TODO: upgrade to MySQL
 
-FASHION_DB = "dir_fashion"
-os.makedirs(FASHION_DB, exist_ok=True)
+# FASHION_DB = "dir_fashion"
+# os.makedirs(FASHION_DB, exist_ok=True)
 
-VOD_DB = "dir_vod"
-os.makedirs(VOD_DB, exist_ok=True)
+# VOD_DB = "dir_vod"
+# os.makedirs(VOD_DB, exist_ok=True)
 
-FAV_DB = "dir_fav"
-os.makedirs(FAV_DB, exist_ok=True)
+# FAV_DB = "dir_fav"
+# os.makedirs(FAV_DB, exist_ok=True)
 
-# mount the uploads folder to the app
-app.mount("/dir_fashion", StaticFiles(directory="dir_fashion"), name="dir_fashion")
-app.mount("/dir_vod", StaticFiles(directory="dir_vod"), name="dir_vod")
-app.mount("/dir_fav", StaticFiles(directory="dir_fav"), name="dir_fav")
+# # mount the uploads folder to the app
+# app.mount("/dir_fashion", StaticFiles(directory="dir_fashion"), name="dir_fashion")
+# app.mount("/dir_vod", StaticFiles(directory="dir_vod"), name="dir_vod")
+# app.mount("/dir_fav", StaticFiles(directory="dir_fav"), name="dir_fav")
 
 # initialize AI model and path
 base_dir = Path(os.getcwd())
@@ -208,7 +209,7 @@ def get_video(video_id: int, db: Session = Depends(get_db)):
     if not video:
         return {"error": "Video not found"}
     
-    return {"video_name": video.video_name, "video_url": video.video_url}
+    return {"video_id": video.video_id, "video_name": video.video_name, "video_url": video.video_url}
 
 ### (GET) OLD VERSION VOD 재생 ###
 # @app.get("/api/video_list/{video_id}")
@@ -225,7 +226,7 @@ def get_video(video_id: int, db: Session = Depends(get_db)):
 # curl -X 'POST' 'http://127.0.0.1:8000/api/product_like?user_id=1&product_id=123'
 @app.post("/api/product_like")
 def like_product(user_id: int, product_id: int, db: Session = Depends(get_db)):
-    # Check if the product is already liked by the user
+    # 찜 할때 이미 찜 했는지 확인하고 추가
     existing_like = db.query(Favorite).filter(
         Favorite.user_id == user_id,
         Favorite.product_id == product_id
@@ -234,7 +235,6 @@ def like_product(user_id: int, product_id: int, db: Session = Depends(get_db)):
     if existing_like:
         return {"message": "Product already liked by the user."}
     
-    # Create a new favorite record
     new_favorite = Favorite(
         user_id=user_id,
         product_id=product_id
@@ -269,30 +269,69 @@ def unlike_product(user_id: int, product_id: int, db: Session = Depends(get_db))
 ### (GET) 찜 상품 목록 조회 ###
 @app.get("/api/product_like_list")
 def get_liked_products(user_id: int, db: Session = Depends(get_db)):
-    # query all product_id values for the given user_id
     liked_products = db.query(Favorite.product_id).filter(Favorite.user_id == user_id).all()
     
-    # convert the list of tuples to a list of product IDs
     product_ids = [product_id[0] for product_id in liked_products]
 
+    # {user_id: 1, liked_products: [1, 2, 3, 4, 5]}
     return {"user_id": user_id, "liked_products": product_ids}
 
 ### (GET) 유사 상품 리스트 조회 ###
 @app.get("/api/similar_product_list")
-def dummy():
-    return 0
-# TODO
-
-### (GET) 유사 상품 리스트에서 특정 상품 조회 ###
-@app.get("/api/similar_product_list/{product_id}")
-def dummy():
-    return 0
-# TODO 유사 상품에서 nth 상품 불러오기
+def get_similar_products(product_id: Optional[int] = None, db: Session = Depends(get_db)):
+    # product_id 보내주면 그 상품 정보만 반환 
+    if product_id:
+        product = db.query(Product).filter(Product.product_id == product_id).first()
+        if product:
+            return {
+                "product_id": product.product_id,
+                "product_pic_url": product.product_pic_url,
+                "brand_name": product.brand_name,
+                "product_name": product.product_name,
+                "price": product.price,
+                "detail": product.detail,
+            }
+        return {"error": "Product not found"}
+    
+    # product_id 없으면 모든 상품 정보 반환 -- (TODO: 모든 유사 상품으로 바꿔야됨)
+    products = db.query(Product).all()
+    return [
+        {
+            "product_id": p.product_id,
+            "product_pic_url": p.product_pic_url,
+            "brand_name": p.brand_name,
+            "product_name": p.product_name,
+            "price": p.price,
+            "detail": p.detail,
+        }
+        for p in products
+    ]
+ 
+# ### (GET) 유사 상품 리스트에서 특정 상품 조회 ### -- 삭제 예정
+# @app.get("/api/similar_product_list/{product_id}")
+# def dummy():
+#     return 0
 
 ### (GET) 하이라이트 상품 리스트 조회 ###
 @app.get("/api/highlight_product_list")
-def dummy():
-    return 0
+def get_highlight_products(video_id: int, db: Session = Depends(get_db)):
+    highlights = db.query(Highlight).filter(Highlight.video_id == video_id).all()
+
+    if not highlights:
+        return {"error": "No highlights found for this video_id"}
+    
+    return [
+        {
+            "highlight_idx": h.highlight_idx,
+            "highlight_pic_url": h.highlight_pic_url,
+            "product_id": h.product_id,  
+            "product_pic_url": h.product_pic_url,
+            "brand_name": h.brand_name,
+            "product_name": h.product_name,
+            "price": h.price,
+        }
+        for h in highlights
+    ]
 
 
 ##################### AI MODEL #####################
@@ -357,7 +396,8 @@ def dummy():
 #         raise HTTPException(status_code=400, detail=str(e))
 
 
-# initialize backend server
+##################### initialize backend server #####################
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=5000)

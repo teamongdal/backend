@@ -1,5 +1,5 @@
 # backend/database.py -> videos.db 생성
-# Database using SQLAlchemy -> TODO: MySQL로 변경
+# Database using SQLAlchemy -> TODO: MySQL로 변경 (?)
 
 ############################################################################################################
 ############################################################################################################
@@ -53,7 +53,9 @@ class Highlight(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     video_id = Column(Integer, index=True)  # Links to Video Table
-    video_pic_url = Column(String, nullable=False)  # Screenshot of the highlight scene
+    highlight_idx = Column(Integer, nullable=False)  # Index of the highlight scene
+    highlight_pic_url = Column(String, nullable=False)  # Screenshot of the highlight scene
+    product_id = Column(Integer, index=True)  # Links to Product Table
     product_pic_url = Column(String, nullable=False)  # Product image shown in the scene
     brand_name = Column(String, nullable=False)  # Brand of the featured product
     product_name = Column(String, nullable=False)  # Name of the featured product

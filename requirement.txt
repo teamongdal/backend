@@ -12,3 +12,4 @@ alembic
 psycopg2 
 pymysql
 pydantic
+httpx
