@@ -14,16 +14,19 @@ DATABASE_URL = "sqlite:///./app_data.db"
 
 Base = declarative_base()
 
+# User Table: user_id / user_name
+class User(Base):
+    __tablename__ = "users"
+
+    user_id = Column(Integer, primary_key=True, index=True)
+    user_name = Column(String, nullable=False)
+
 # Video Table: video_id / video_name / video_url / video_image
-# SAMPLE:
-# video_id: 1
-# video_name: I_AM_SOLO
-# video_url: https://ai-shop-bucket.s3.ap-southeast-2.amazonaws.com/vod/나는_SOLO_E151_10m.mp4
-# video_image: local_url 사용
 class Video(Base):
     __tablename__ = "videos"
     
     video_id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True)
     video_name = Column(String, nullable=False)
     video_url = Column(String, nullable=False)
     video_image = Column(String, nullable=False)

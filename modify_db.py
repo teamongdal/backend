@@ -2,31 +2,47 @@ import os
 import json
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
-from database import SessionLocal, Video, Favorite, Product, Highlight
+from database import SessionLocal, Video, Favorite, Product, Highlight, User
 
-def add_video_to_db(vid_name, vid_url, vid_img):
+def add_video_to_db():
+    # Directories
+    project_dir = os.path.dirname(os.path.abspath(__file__))
+    metadata_dir = os.path.join(project_dir, "local_data", "video_metadata")
+    
     db = SessionLocal()
     try:
-        # Check if the video already exists based on vid_url
-        existing_video = db.query(Video).filter(Video.video_url == vid_url).first()
-        if existing_video:
-            print(f"Video already exists: {vid_url}")
-            return
+        for filename in os.listdir(metadata_dir):
+            if filename.endswith(".json"):
+                metadata_path = os.path.join(metadata_dir, filename)
+                
+                # Read metadata
+                with open(metadata_path, "r", encoding="utf-8") as f:
+                    metadata = json.load(f)
+                
+                # Extract required fields
+                vid_name = metadata.get("video_name", "")
+                vid_url = metadata.get("video_url", "")
+                vid_img = metadata.get("video_image", "")
+                
+                # Check if video already exists
+                existing_video = db.query(Video).filter(Video.video_url == vid_url).first()
+                if existing_video:
+                    print(f"Video already exists: {vid_url}")
+                    continue
+                
+                # Create and add new video entry
+                new_video = Video(
+                    video_name=vid_name,
+                    video_url=vid_url,
+                    video_image=vid_img
+                )
+                db.add(new_video)
         
-        # Create and add new video entry
-        new_video = Video(
-            video_name=vid_name,  # Video name
-            video_url=vid_url,  # Video URL (cloud)
-            video_image=vid_img  # Thumbnail URL (local)
-        )
-        db.add(new_video)
         db.commit()
-        print("Video added successfully!")
-
+        print("Videos added successfully!")
     except SQLAlchemyError as e:
-        db.rollback()  # Rollback in case of error
-        print(f"Error adding video: {str(e)}")
-    
+        db.rollback()
+        print(f"Error adding videos: {str(e)}")
     finally:
         db.close()
 
@@ -143,13 +159,29 @@ def make_highlights_db():
     finally:
         db.close()
 
+def add_user_to_db(name):
+    db = SessionLocal()
+    try:
+        # Check if user already exists
+        existing_user = db.query(User).filter(User.user_name == name).first()
+        if existing_user:
+            print(f"User already exists: {name}")
+            return
+        
+        # Create and add new user entry
+        new_user = User(user_name=name)
+        db.add(new_user)
+        db.commit()
+        print(f"User added successfully: {name}")
+    except SQLAlchemyError as e:
+        db.rollback()
+        print(f"Error adding user: {str(e)}")
+    finally:
+        db.close()
 
-vid_name = "나는 SOLO E151"
-vid_url = "https://ai-shop-bucket.s3.ap-southeast-2.amazonaws.com/vod/나는_SOLO_E151_10m.mp4"
-vid_img = "C:/github/backend/local_data/video_pic/2188058 나는_SOLO_E151_Thumbnail.png"
-
-# add_video_to_db(vid_name, vid_url, vid_img)
 if __name__ == "__main__":
-    add_video_to_db(vid_name, vid_url, vid_img)
-    add_products_to_db()
-    make_highlights_db()
+    add_video_to_db() # add videos to db
+    add_products_to_db() # add ALL products (provided) to db
+    make_highlights_db() # add highlight scenes (provided) to db
+    user_name = 'Guest'
+    add_user_to_db(user_name)
