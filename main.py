@@ -1,18 +1,4 @@
-# backend/main.py
-# using FastAPI
-
-# FRONTEND Design: 
-#   Upload Button  - 
-#   View Button    - 
-#   Restart Button - 
-
-# BACKEND Design:
-#   Upload Button -> POST request processed
-#       AI Model to take in image and return keywords
-#       Database to store uploaded images
-#       Perform data-pre-processing
-#   View Button -> GET request processed
-#   Restart Button -> ?
+# backend/main.py using FastAPI
 
 ############################################################################################################
 ############################################################################################################
@@ -50,137 +36,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# AI Model: Jellyfish Detector example
-# class JellyfishDetector:
-#     def __init__(self, weights_path, conf_thres=0.5, iou_thres=0.45):
-#         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        
-#         self.names = [
-#             'barrel_jellyfish',
-#             'blue_jellyfish',
-#             'compass_jellyfish',
-#             'lions_mane_jellyfish',
-#             'mauve_stinger_jellyfish',
-#             'moon_jellyfish'
-#         ]
-        
-#         self.model = build_model()
-#         checkpoint = torch.load(weights_path, map_location=self.device)
-#         if 'model_state_dict' in checkpoint:
-#             state_dict = checkpoint['model_state_dict']
-#         else:
-#             state_dict = checkpoint
-#         self.model.load_state_dict(state_dict)
-        
-#         self.model.to(self.device)
-#         self.model.eval()
-        
-#         self.conf_thres = conf_thres
-#         self.iou_thres = iou_thres
-#         self.colors = [[np.random.randint(0, 255) for _ in range(3)] for _ in self.names]
-
-#     def preprocess_image(self, img_path):
-#         img0 = cv2.imread(str(img_path))
-#         if img0 is None:
-#             raise ValueError(f"Failed to load image: {img_path}")
-        
-#         img = letterbox(img0, new_shape=640)[0]
-#         img = img.transpose(2, 0, 1)
-#         img = np.ascontiguousarray(img)
-#         img = torch.from_numpy(img).to(self.device)
-#         img = img.float()
-#         img /= 255.0
-#         if img.ndimension() == 3:
-#             img = img.unsqueeze(0)
-#         return img, img0
-
-#     def detect(self, img_path):
-#         img, img0 = self.preprocess_image(img_path)
-        
-#         with torch.no_grad():
-#             pred = self.model(img)
-            
-#             if isinstance(pred, (tuple, list)):
-#                 pred = pred[0]
-            
-#             pred[..., 4:] = torch.sigmoid(pred[..., 4:])
-            
-#             pred = non_max_suppression(pred, self.conf_thres, self.iou_thres)
-
-#         results = []
-#         class_counts = {}
-        
-#         for i, det in enumerate(pred):
-#             if det is not None and len(det):
-#                 det[:, :4] = scale_coords(img.shape[2:], det[:, :4], img0.shape).round()
-                
-#                 det = det[det[:, 4].argsort(descending=True)]
-#                 det = det[:10]
-                
-#                 for *xyxy, conf, cls in det:
-#                     cls_idx = int(cls)
-#                     if cls_idx < 0 or cls_idx >= len(self.names):
-#                         continue
-                    
-#                     class_name = self.names[cls_idx]
-#                     if class_name not in class_counts:
-#                         class_counts[class_name] = 0
-#                     if class_counts[class_name] >= 2:
-#                         continue
-#                     class_counts[class_name] += 1
-                    
-#                     conf = torch.clamp(conf, 0, 1)
-                    
-#                     label = f'{class_name} {conf:.2f}'
-#                     self.plot_one_box(xyxy, img0, label=label, color=self.colors[cls_idx])
-                    
-#                     results.append({
-#                         'bbox': [coord.item() for coord in xyxy],
-#                         'confidence': conf.item(),
-#                         'class': class_name
-#                     })
-
-#         return img0, results
-
-#     def plot_one_box(self, xyxy, img, color=None, label=None, line_thickness=None):
-#         # Plots one bounding box on image img
-#         tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
-#         color = color or [random.randint(0, 255) for _ in range(3)]
-#         c1, c2 = (int(xyxy[0]), int(xyxy[1])), (int(xyxy[2]), int(xyxy[3]))
-#         cv2.rectangle(img, c1, c2, color, thickness=tl, lineType=cv2.LINE_AA)
-#         if label:
-#             tf = max(tl - 1, 1)  # font thickness
-#             t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
-#             c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
-#             cv2.rectangle(img, c1, c2, color, -1, cv2.LINE_AA)  # filled
-#             cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
-
-
-########################### REMOVE START ###########################
-
-# SIMPLE LOCAL DB METHOD -> TODO: upgrade to MySQL
-
-# FASHION_DB = "dir_fashion"
-# os.makedirs(FASHION_DB, exist_ok=True)
-
-# VOD_DB = "dir_vod"
-# os.makedirs(VOD_DB, exist_ok=True)
-
-# FAV_DB = "dir_fav"
-# os.makedirs(FAV_DB, exist_ok=True)
-
-# # mount the uploads folder to the app
-# app.mount("/dir_fashion", StaticFiles(directory="dir_fashion"), name="dir_fashion")
-# app.mount("/dir_vod", StaticFiles(directory="dir_vod"), name="dir_vod")
-# app.mount("/dir_fav", StaticFiles(directory="dir_fav"), name="dir_fav")
-
-# initialize AI model and path
-base_dir = Path(os.getcwd())
-# weights_path = base_dir / 'runs' / 'train' / 'exp' / 'best_model_20250117_221328.pth'
-# detector = JellyfishDetector(weights_path)
-
-########################### REMOVE END ###########################
-
 ### SQLAlchemy DB ###
 # Dependency to get DB session
 def get_db():
@@ -193,16 +48,16 @@ def get_db():
 # reset current SimilarProduct DB 
 # similarProduct DB: { rank, product_id }
 
-### (GET) VOD 목록 리스트 ###
+### 1.(GET) VOD 리스트 페이지 - VOD 리스트 조회 ###
 @app.get("/api/video_list")
-def get_videos(db: Session = Depends(get_db)):
-    videos = db.query(Video).all()
+def get_videos(user_id: int, db: Session = Depends(get_db)):
+        videos = db.query(Video).filter(Video.user_id == user_id).all()
+        # return [{"video_id": v.video_id, "video_name": v.video_name, "video_url": v.video_url, "video_image": v.video_image} for v in videos]
+        return [{"video_id": v.video_id, "video_name": v.video_name, "video_image": v.video_image} for v in videos]
 
-    return [{"video_id": v.video_id, "video_name": v.video_name, "video_url": v.video_url, "video_image": v.video_image} for v in videos]
-
-### (GET) VOD 재생 ###
-# curl -X 'GET' 'http://127.0.0.1:8000/api/video_fetch?video_id=1'
-@app.get("/api/video_fetch")
+### 2. (GET) VOD 재생 페이지 - 해당 VOD 조회 ###
+# example: curl -X 'GET' 'http://127.0.0.1:8000/api/video_fetch?video_id=1'
+@app.get("/api/video_play")
 def get_video(video_id: int, db: Session = Depends(get_db)):
     video = db.query(Video).filter(Video.video_id == video_id).first()
 
@@ -211,15 +66,42 @@ def get_video(video_id: int, db: Session = Depends(get_db)):
     
     return {"video_id": video.video_id, "video_name": video.video_name, "video_url": video.video_url}
 
-### (GET) OLD VERSION VOD 재생 ###
-# @app.get("/api/video_list/{video_id}")
-# def get_video(video_id: int, db: Session = Depends(get_db)):
-#     video = db.query(Video).filter(Video.video_id == video_id).first()
+# TODO: Embedding AI Model for capturing frame and detecting products
+# TODO: HOW TO CAPTURE ONE FRAME FROM VIDEO?
+### 3.1. (GET) VOD 재생 페이지 - 유저 음성 발화 상품 검색 ###
+@app.get("/api/search_product")
+def search_product(req_stt: str, img: ?, time: ?, db: Session = Depends(get_db)):
+    product_id = search_ai()
+    return None # should return product_id from Product DB + call next AI Model
 
-#     if not video:
-#         return {"error": "Video not found"}
+# TODO: AI Model [FAISS Model] for finding similar products based on the detected product (top 5?)
+### 3.2. (GET) 
+@app.get("/api/recommend_product")
+def recommend_product():
+
+
+
+### 4.(GET) 상품 검색 결과 페이지 - 상품 리스트 조회 ###
+@app.get("/api/product_list")
+def get_similar_products(user_id: int, product_id: int, db: Session = Depends(get_db)):
     
-#     return {"video_name": video.video_name, "video_url": video.video_url}
+    product = db.query(Product).filter(Product.product_id == product_id).first()
+    products = db.query(Product).all() # (유사한 옷을 찾는 query)
+
+    if product:
+        return [
+            {
+                "product_id": p.product_id,
+                "product_pic_url": p.product_pic_url,
+                "brand_name": p.brand_name,
+                "product_name": p.product_name,
+                "price": p.price,
+                "detail": p.detail,
+            }
+            for p in products
+        ]
+
+
 
 
 ### (POST) 찜하기 ###
@@ -276,36 +158,7 @@ def get_liked_products(user_id: int, db: Session = Depends(get_db)):
     # {user_id: 1, liked_products: [1, 2, 3, 4, 5]}
     return {"user_id": user_id, "liked_products": product_ids}
 
-### (GET) 유사 상품 리스트 조회 ###
-@app.get("/api/similar_product_list")
-def get_similar_products(product_id: Optional[int] = None, db: Session = Depends(get_db)):
-    # product_id 보내주면 그 상품 정보만 반환 
-    if product_id:
-        product = db.query(Product).filter(Product.product_id == product_id).first()
-        if product:
-            return {
-                "product_id": product.product_id,
-                "product_pic_url": product.product_pic_url,
-                "brand_name": product.brand_name,
-                "product_name": product.product_name,
-                "price": product.price,
-                "detail": product.detail,
-            }
-        return {"error": "Product not found"}
-    
-    # product_id 없으면 모든 상품 정보 반환 -- (TODO: 모든 유사 상품으로 바꿔야됨)
-    products = db.query(Product).all()
-    return [
-        {
-            "product_id": p.product_id,
-            "product_pic_url": p.product_pic_url,
-            "brand_name": p.brand_name,
-            "product_name": p.product_name,
-            "price": p.price,
-            "detail": p.detail,
-        }
-        for p in products
-    ]
+
  
 # ### (GET) 유사 상품 리스트에서 특정 상품 조회 ### -- 삭제 예정
 # @app.get("/api/similar_product_list/{product_id}")
