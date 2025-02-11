@@ -1,5 +1,4 @@
 {
     "video_name": "나는 혼자 산다",
-    "video_url": "https://ai-shop-bucket.s3.ap-southeast-2.amazonaws.com/vod/나는_SOLO_E151_10m.mp4",
-    "video_image": "C:/github/backend/local_data/video_thumbnail/I_Live_Alone_thumbnail.jpg"
+    "video_url": "https://ai-shop-bucket.s3.ap-southeast-2.amazonaws.com/vod/나는_SOLO_E151_10m.mp4"
 }

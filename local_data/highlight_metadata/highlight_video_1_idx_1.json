@@ -1,0 +1,7 @@
+{
+    "product_id": 1,
+    "similar_product_1": 1,
+    "similar_product_2": 2,
+    "similar_product_3": 3,
+    "similar_product_list": [1, 2, 3]
+}
