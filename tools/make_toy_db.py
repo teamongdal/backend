@@ -4,8 +4,10 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from database import SessionLocal, Video, UserFavorite, Product, Highlight, UserVideo
 
+project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))    
+
 def add_video_to_db():
-    project_dir = os.path.dirname(os.path.abspath(__file__))
+    # project_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))    
     metadata_dir = os.path.join(project_dir, "local_data", "video_metadata")
     thumbnail_dir = os.path.join(project_dir, "local_data", "video_thumbnail")
 
@@ -65,7 +67,7 @@ def add_video_to_db():
 
 # UPDATED FOR detail_image_url COLUMN
 def add_products_to_db():
-    project_dir = os.path.dirname(os.path.abspath(__file__))
+    # project_dir = os.path.dirname(os.path.abspath(__file__))
     image_dir = os.path.join(project_dir, "local_data", "product_image")
     metadata_dir = os.path.join(project_dir, "local_data", "modified_product_metadata")
     
@@ -127,7 +129,7 @@ def add_products_to_db():
 
 # UPDATED FOR 'similar_product_list' COLUMN
 def add_highlights_db():
-    project_dir = os.path.dirname(os.path.abspath(__file__))
+    # project_dir = os.path.dirname(os.path.abspath(__file__))
     highlight_image_dir = os.path.join(project_dir, "local_data", "highlight_image")
     highlight_metadata_dir = os.path.join(project_dir, "local_data", "highlight_metadata")
 
@@ -206,7 +208,7 @@ def add_highlights_db():
         db.close()
 
 def add_uservideo_to_db():
-    project_dir = os.path.dirname(os.path.abspath(__file__))
+    # project_dir = os.path.dirname(os.path.abspath(__file__))
     uservideo_dir = os.path.join(project_dir, "local_data", "user_video")
 
     db = SessionLocal()
@@ -247,7 +249,7 @@ def add_uservideo_to_db():
         db.close()
 
 def add_userfavorite_to_db():
-    project_dir = os.path.dirname(os.path.abspath(__file__))
+    # project_dir = os.path.dirname(os.path.abspath(__file__))
     userfavorite_dir = os.path.join(project_dir, "local_data", "user_favorite")
 
     db = SessionLocal()

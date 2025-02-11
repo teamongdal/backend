@@ -4,7 +4,7 @@
 ############################################################################################################
 ############################################################################################################
 
-from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Query
+from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Query, Form
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -20,10 +20,13 @@ from pathlib import Path
 # from utils import non_max_suppression, scale_coords, xyxy2xywh
 # from data import letterbox
 from typing import List, Optional
-import random
+# import random
 from sqlalchemy.orm import Session
 from database import SessionLocal, Video, Product, Highlight, UserVideo, UserFavorite
 import json
+import io
+from stt_backend import process_audio_file
+
 
 # intiaite FastAPI app
 app = FastAPI()
@@ -76,44 +79,92 @@ def get_video(video_id: int, db: Session = Depends(get_db)):
     # return {"video_id": video.video_id, "video_name": video.video_name, "video_url": video.video_url}
     return {"video_url": video.video_url}
 
-# TODO: Embedding AI Model for capturing frame and detecting products
-# TODO: Receives audio capture + frame capture from frontend (using stt.py) -> Detection AI Model
-# TODO: Check and raise status code for (repeating STT prompt), (no product detected), (no product found in DB) etc.
-### 3. (GET) VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
-@app.get("/api/search_product")
-def search_product(user_id: int, req_stt: str, img: None, time: None, db: Session = Depends(get_db)):
-    return None
-#     # TODO (CONFIRM AI MODEL PROCESS)
-#     # AI Model 1: LLM 
+from fastapi import UploadFile, File, Form, HTTPException
+
+### 3. (POST) 임시!!!! VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
+@app.post("/api/search_product")
+async def search_product(
+    user_id: int,
+    # user_id: int = Query(...), # User ID passed as query parameter
+    audio: UploadFile = File(...),  # Audio file passed in the form-data body
+    db: Session = Depends(get_db)  # Database session
+):
+    try:
+        # Ensure the file is received
+        if not audio:
+            return {"success": False, "message": "No audio file received"}
+
+        # Validate the file type (audio formats)
+        if not audio.filename.endswith((".mp3", ".wav", ".m4a")): # should be just .wav
+            return {"success": False, "message": "Invalid audio format"}
+
+        
+        # Read the file into memory (without saving it)
+        audio_bytes = await audio.read()
+        audio_buffer = io.BytesIO(audio_bytes)  # Convert to a file-like object
+
+        # Call STT function directly with the in-memory file
+        transcribed_text = process_audio_file(audio_buffer)
+
+        # Return the transcribed text
+        return {
+            "success": True,
+            "message": "Audio processed successfully",
+            "user_id": user_id,
+            "speech_text": transcribed_text
+        }
+        ### STT Begin ###
+
+        ### STT End ###
+        transcribed_text = "Example transcription from audio"
+
+        ### LLM Begin ###
+
+        ### LLM End ###
+
+        ### Detection Model Begin ###
+
+        ### Detection Model End ###
+
+        ### Recommendation Model Begin ###
+
+        ### Recommendation Model End ###
+
+        return {
+            "success": True,
+            "message": "Audio received and processed successfully",
+            "user_id": user_id,
+            "transcribed_text": transcribed_text,
+        }
+
+    except Exception as e:
+        return {"success": False, "message": str(e)}
 
 
-#     # AI Model 2: Detect product from the frame
-#     product_id = search_ai()
 
-#     # AI Model 3 [FAISS]: Recommend similar products using product_id
-#     
-#     find_product_id = []
-#     return get_similar_products(user_id = user_id, find_product_id = find_product_id)
-#     !!! the 'return' value will have the format shown below !!!
-    # return [
-    #     {
-    #         "product_id": p.product_id,
-    #         "product_image_url": p.product_image_url,
-    #         "brand_name": p.brand_name,
-    #         "product_name": p.product_name,
-    #         "price": p.price,
-    #         "detail_image": p.detail_image,
-    #         "is_like": p.product_id in favorite_product_ids  # Check if product is liked by the user
-    #     }
-    #     for p in products
-    # ]
+# ### 3. (GET) VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
+# @app.get("/api/search_product")
+# def search_product(user_id: int, audio: audio_file, img: vid_frame, time: None, db: Session = Depends(get_db)):
+    # TODO 
+    # AI Model 1: LLM 
+    # 1. send audio to STT. Send string to LLM. Receive processed keywords.
+    # 2. send keywords + vid_frame to Detection Model. Receive product_id.
+    # 3. send product_id to Recommendation Model. Receive similar products product_id (find_product_id)
+    # 4. call get_similar_products(user_id, find_product_id)
+    # 5. return product_list
+    # 6. **check for error / multi-turn checkpoints  
 
 
 ### 4. (GET) 상품 검색 결과 페이지 - 상품 리스트 조회 (연동화를 위해 AI 모델 대체하는 함수) ###
-## AI 모델에서 get_similar_products 함수 호출 / highlight에서는 "/api/product_list"로 호출
+## (1)AI 모델에서 get_similar_products(user_id, find_product_id) 함수 호출
+## (2)highlight에서는 "/api/product_list (user_id, product_id)"로 호출
+## TODO remove product_id. use only find_product_id. no query on highlight! 
 @app.get("/api/product_list")
-def get_similar_products(user_id: int, find_product_id: Optional[List[int]] = Query(None), db: Session = Depends(get_db)):
+def get_similar_products(user_id: int, product_id: Optional[int] = Query(None), find_product_id: Optional[List[int]] = Query(None), db: Session = Depends(get_db)):
     # Fetch products matching find_product_id
+    #TODO cancel! if (product_id) -> Query on highlights DB for similar_products_id and set this to find_product_id
+    #TODO cancel! if (find_product_id) -> do nothing.
+        #TODO Optimization: check if product_id in highlights DB before running AI model
     find_product_id = [1, 3, 15] # sample find_product_id[]
     products = db.query(Product).filter(Product.product_id.in_(find_product_id)).all()
     
@@ -135,8 +186,6 @@ def get_similar_products(user_id: int, find_product_id: Optional[List[int]] = Qu
             for p in products
         ]
     }
-
-
 
 
 ### 5. (GET) 상품 상세 페이지 - 상품 상세 조회 ### 
@@ -219,8 +268,6 @@ def product_like_list(user_id: int, db: Session = Depends(get_db)):
     }
 
 
-
-
 ### 9. (GET) 전체 상품 리스트 페이지 - 전체 상품 조회 ###
 @app.get("/api/all_product_list")
 def get_highlight_products(video_id: int, db: Session = Depends(get_db)):
@@ -245,12 +292,12 @@ def get_highlight_products(video_id: int, db: Session = Depends(get_db)):
                 "similar_product_1": h.similar_product_1,
                 "similar_product_2": h.similar_product_2,
                 "similar_product_3": h.similar_product_3
+                # TODO Option 1: remove similar_product_idx && perform query inside api(/api/product_list) using product_id?
                 # "similar_product_list": json.loads(h.similar_product_list) # [product_id of itself + similar products] -> call product_list using this
             }
             for h in highlights
         ]
     }
-
 
 
 ##################### AI MODEL #####################
