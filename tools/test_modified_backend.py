@@ -1,7 +1,7 @@
 import httpx
 
 # Define the base URL for the running backend
-BASE_URL = "http://localhost:5000"
+BASE_URL = "http://localhost:8000"
 
 # Initialize the HTTP client
 client = httpx.Client()
@@ -23,9 +23,10 @@ def test_get_video_play():
 # Test 3: GET /api/search_product
 def test_search_product():
     try:
-        # Prepare the file to be sent
-        audio_file_path = r"C:\github\ongdal\backend\tools\sample2.wav"
-        
+        # Sample audio file ("왼쪽 옷 정보 알려줘")
+        # audio_file_path = r"C:\github\ongdal\backend\tools\sample2.wav"
+        audio_file_path = r"./tools/sample2.wav"
+
         # Open the .wav file in binary mode for uploading
         with open(audio_file_path, "rb") as audio_file:
             files = {

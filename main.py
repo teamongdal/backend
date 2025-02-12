@@ -3,7 +3,6 @@
 ############################################################################################################
 ############################################################################################################
 ############################################################################################################
-
 from fastapi import FastAPI, File, UploadFile, HTTPException, Depends, Query, Form
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -26,7 +25,7 @@ from database import SessionLocal, Video, Product, Highlight, UserVideo, UserFav
 import json
 import io
 from stt_backend import process_audio_file
-from llm.speech_parser import parse_speech_to_json
+from llm.speech_parser import parse_speech_to_json, classify_speech_request
 
 # intiaite FastAPI app
 app = FastAPI()
@@ -81,7 +80,7 @@ def get_video(video_id: int, db: Session = Depends(get_db)):
 
 from fastapi import UploadFile, File, Form, HTTPException
 
-### 3. (POST) 임시!!!! VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
+### 3. (POST) VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
 @app.post("/api/search_product")
 async def search_product(
     user_id: int,
@@ -103,60 +102,34 @@ async def search_product(
         audio_bytes = await audio.read()
         audio_buffer = io.BytesIO(audio_bytes)  # Convert to a file-like object
 
-        # Call STT function directly with the in-memory file
+        # STT Begin: directly with the in-memory file
         transcribed_text = process_audio_file(audio_buffer) # transcribed_text ="왼쪽 옷 정보 알려줘줘"
+        # STT End
 
+        # LLM Begin
         llm_keywords = parse_speech_to_json(transcribed_text)
-        
-        # print(llm_keywords)
-        # Return the transcribed text
-        return {
-            "success": True,
-            "message": "Audio processed successfully",
-            "user_id": user_id,
-            "speech_text": transcribed_text,
-            "llm keywords": llm_keywords
-        }
-        ### STT Begin ###
-
-        ### STT End ###
-        transcribed_text = "Example transcription from audio"
-
-        ### LLM Begin ###
-
-        ### LLM End ###
+        llm_keywords_dict = json.loads(llm_keywords)
+        # LLM End
 
         ### Detection Model Begin ###
+
 
         ### Detection Model End ###
 
         ### Recommendation Model Begin ###
 
-        ### Recommendation Model End ###
 
+        ### Recommendation Model End ###
         return {
             "success": True,
-            "message": "Audio received and processed successfully",
+            "message": "Audio processed successfully",
             "user_id": user_id,
-            "transcribed_text": transcribed_text,
+            "speech_text": transcribed_text,
+            "llm_keywords": llm_keywords_dict
         }
 
     except Exception as e:
         return {"success": False, "message": str(e)}
-
-
-
-# ### 3. (GET) VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
-# @app.get("/api/search_product")
-# def search_product(user_id: int, audio: audio_file, img: vid_frame, time: None, db: Session = Depends(get_db)):
-    # TODO 
-    # AI Model 1: LLM 
-    # 1. send audio to STT. Send string to LLM. Receive processed keywords.
-    # 2. send keywords + vid_frame to Detection Model. Receive product_id.
-    # 3. send product_id to Recommendation Model. Receive similar products product_id (find_product_id)
-    # 4. call get_similar_products(user_id, find_product_id)
-    # 5. return product_list
-    # 6. **check for error / multi-turn checkpoints  
 
 
 ### 4. (GET) 상품 검색 결과 페이지 - 상품 리스트 조회 (연동화를 위해 AI 모델 대체하는 함수) ###
@@ -194,7 +167,7 @@ def get_similar_products(user_id: int, product_id: Optional[int] = Query(None), 
 
 ### 5. (GET) 상품 상세 페이지 - 상품 상세 조회 ### 
 # 이건 기존 ("api/product_list")에서 'detail' array에서 이미지 url을 받아와서 보여주기 (frontend 처리)
-
+# TODO 5. 삭제 예정
 
 ### 6. (POST) 상품 찜하기 ###
 @app.post("/api/product_like")
