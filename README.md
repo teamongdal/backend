@@ -1,42 +1,109 @@
-backend 사용 방법 
-Python 3.13.2 사용 - 다른 버전도 문제없는지 모름
+# 🚀 Backend 사용 방법 (README.md)
 
-0. FE & BE 연동 테스트 
-pip install -r requirement.txt
-(1) backend/hyub_google_cloud_key.json, (2) backend/llm/.env 있는지 확인 (없으면 요청)
-python main.py -- http://localhost:8000/docs 접속 확인
-python ./tools/test_modified_backend.py -- status code 다 200(성공)으로 나오는지 확인
+## **🔹 0. FE & BE 연동 테스트 (Frontend & Backend Integration Test)**
+### **📌 Requirements**
+- **Python 3.13.2** 사용 *(다른 버전도 가능하나 테스트되지 않음)*
+- 필수 파일:
+  - `backend/hyub_google_cloud_key.json`
+  - `backend/llm/.env`
+  - 위 파일이 없을 경우 요청 필요.
 
-1. 주요 파일
-requirement.txt -- python3.13.2 / require libraries / pip install -r requirement.txt 실행
-main.py         -- backend using FastAPI
-database.py     -- SQLalchemy DB initialization 
-app_data.db     -- sqlite3 db
-tools/make_toy_db.py    -- 실험용 DB 생성
+### **📌 실행 방법**
+```bash
+pip install -r requirements.txt  # 필수 라이브러리 설치
+python main.py  # Backend 서버 실행
+```
+- **백엔드 문서 접속 확인:** [http://localhost:8000/docs](http://localhost:8000/docs)
+- **연동 테스트:**  
+  ```bash
+  python ./tools/test_modified_backend.py  # 모든 status code가 200(성공)인지 확인
+  ```
 
-2. DB setup/usage 설명 
-(TODO: crawling작업 끝나고 DB 새로 만들 예정!)
-python database.py                   -- app_data.db 생성함 (app_data.db 이미 있으면 커맨드 실행 X)
-sqlite3 app_data.db                  -- DB 접속 방법 1
-DB Browser for SQLite                -- DB 접속 방법 2
-.tables                              -- table 목록 조회
-PRAGMA table_info(<table>);          -- checking info of specific table
-DROP TABLE IF EXISTS <table>;        -- removing tables
-SELECT * FROM <table>                -- find all entries from table
-python modify_db.py                  -- DB 추가/삭제 macro (직접 수정해서 실행)
+---
 
-3. backend server 실행
-python main.py                          -- localhost:8000로 backend server 접속
+## **🔹 1. 주요 파일 설명**
+| **파일명** | **설명** |
+|------------|---------|
+| `requirements.txt` | Python 3.13.2 환경의 필수 라이브러리 목록 (`pip install -r requirements.txt` 실행) |
+| `main.py` | **FastAPI 기반 Backend 서버** 실행 파일 |
+| `database.py` | **SQLAlchemy** 기반 DB 초기화 스크립트 |
+| `app_data.db` | **SQLite3** 데이터베이스 파일 |
+| `tools/make_toy_db.py` | **실험용 DB 생성 스크립트** |
 
-4. app_data.db
-(추후 작업 예정)
+---
 
-5. tools/
-(추후 작업 예정)
+## **🔹 2. DB Setup 및 사용 방법**
+📌 *(크롤링 작업 후 DB를 새로 생성할 예정!)*
 
-6. crawling/
-chromedriver.exe 설치하고 crawling/ 디렉토리로 이동
-cloth.py 실행하면 crawling 실행
+### **📌 DB 생성**
+```bash
+python database.py  # app_data.db 생성 (이미 존재하면 실행되지 않음)
+```
 
-check_valid_image_2_csv.py -- 사진 2개 이상있는 entry
-check_valid_image_2_csv.py -- 사진 4개 있는 entry
+### **📌 SQLite3을 사용한 DB 접근 방법**
+```bash
+sqlite3 app_data.db  # DB 접속 방법 1 (터미널)
+```
+또는 **DB Browser for SQLite** 사용 (GUI 기반 DB 조회 가능).
+
+### **📌 주요 DB 명령어**
+```sql
+.tables;                           -- 테이블 목록 조회
+PRAGMA table_info(<table>);        -- 특정 테이블의 컬럼 정보 확인
+DROP TABLE IF EXISTS <table>;      -- 테이블 삭제
+SELECT * FROM <table>;             -- 특정 테이블의 모든 데이터 조회
+```
+
+### **📌 DB 추가/삭제 작업**
+```bash
+python modify_db.py  # DB 추가/삭제 매크로 실행 (파일 직접 수정 필요)
+```
+
+---
+
+## **🔹 3. Backend Server 실행**
+```bash
+python main.py  # Backend 서버 실행 (http://localhost:8000)
+```
+
+---
+
+## **🔹 4. `app_data.db`**
+- (추후 작업 예정)
+
+---
+
+## **🔹 5. `tools/`**
+- (추후 작업 예정)
+
+---
+
+## **🔹 6. 크롤링 (Crawling)**
+### **📌 크롤링 실행 방법**
+1. **`chromedriver.exe` 설치**  
+   *(웹 크롤링을 위한 필수 요소)*
+2. **`crawling/` 디렉토리로 이동**
+   ```bash
+   cd crawling/
+   ```
+3. **크롤링 실행**
+   ```bash
+   python cloth.py
+   ```
+
+### **📌 크롤링 데이터 검사**
+| 파일명 | 설명 |
+|--------|------|
+| `check_valid_image_2_csv.py` | 사진이 2개 이상 있는 데이터를 찾음 |
+| `check_valid_image_4_csv.py` | 사진이 4개 있는 데이터를 찾음 |
+
+---
+
+## **🚀 추가 사항**
+📌 **백엔드 서버 및 DB 관련 추가 작업 예정**  
+📌 **크롤링 및 데이터 처리 자동화 업데이트 예정**
+
+---
+
+**🎯 프로젝트 업데이트 시 해당 README.md를 유지보수하세요!** 🚀  
+📌 **문의 사항은 Issue를 등록하거나 팀원에게 연락하세요.** 😊
