@@ -26,7 +26,7 @@ from database import SessionLocal, Video, Product, Highlight, UserVideo, UserFav
 import json
 import io
 from stt_backend import process_audio_file
-
+from llm.speech_parser import parse_speech_to_json
 
 # intiaite FastAPI app
 app = FastAPI()
@@ -104,14 +104,18 @@ async def search_product(
         audio_buffer = io.BytesIO(audio_bytes)  # Convert to a file-like object
 
         # Call STT function directly with the in-memory file
-        transcribed_text = process_audio_file(audio_buffer)
+        transcribed_text = process_audio_file(audio_buffer) # transcribed_text ="왼쪽 옷 정보 알려줘줘"
 
+        llm_keywords = parse_speech_to_json(transcribed_text)
+        
+        # print(llm_keywords)
         # Return the transcribed text
         return {
             "success": True,
             "message": "Audio processed successfully",
             "user_id": user_id,
-            "speech_text": transcribed_text
+            "speech_text": transcribed_text,
+            "llm keywords": llm_keywords
         }
         ### STT Begin ###
 
