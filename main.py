@@ -26,6 +26,8 @@ import json
 import io
 from stt_backend import process_audio_file
 from llm.speech_parser import parse_speech_to_json, classify_speech_request
+import subprocess
+
 
 # intiaite FastAPI app
 app = FastAPI()
@@ -80,6 +82,46 @@ def get_video(video_id: int, db: Session = Depends(get_db)):
 
 from fastapi import UploadFile, File, Form, HTTPException
 
+def convert_webm_to_wav(audio_buffer: io.BytesIO) -> io.BytesIO:
+    """
+    Converts a WebM audio file (in a BytesIO buffer) to WAV format using FFmpeg.
+    Returns a BytesIO buffer containing the WAV data.
+    """
+    # Ensure the input buffer is at the start
+    audio_buffer.seek(0)
+    
+    # FFmpeg command:
+    # -i pipe:0  --> read input from stdin
+    # -f wav     --> output format: WAV
+    # pipe:1     --> write output to stdout
+    command = [
+        'ffmpeg',
+        '-hide_banner',       # Suppress banner output
+        '-loglevel', 'error', # Show only errors
+        '-i', 'pipe:0',
+        '-f', 'wav',
+        'pipe:1'
+    ]
+    
+    # Run FFmpeg via subprocess, sending the WebM data via stdin
+    process = subprocess.Popen(
+        command,
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+    )
+    
+    # Read from the input buffer and get output and errors from FFmpeg
+    output, error = process.communicate(audio_buffer.read())
+    
+    if process.returncode != 0:
+        raise RuntimeError(f"FFmpeg conversion failed: {error.decode('utf-8')}")
+    
+    # Create a new BytesIO buffer for the WAV data
+    wav_buffer = io.BytesIO(output)
+    wav_buffer.seek(0)
+    return wav_buffer
+
 ### 3. (POST) VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
 @app.post("/api/search_product")
 async def search_product(
@@ -101,9 +143,9 @@ async def search_product(
         # Read the file into memory (without saving it)
         audio_bytes = await audio.read()
         audio_buffer = io.BytesIO(audio_bytes)  # Convert to a file-like object
-
+        wav_buffer = convert_webm_to_wav(audio_buffer) 
         # STT Begin: directly with the in-memory file
-        transcribed_text = process_audio_file(audio_buffer) # transcribed_text ="왼쪽 옷 정보 알려줘줘"
+        transcribed_text = process_audio_file(wav_buffer) # transcribed_text ="왼쪽 옷 정보 알려줘"
         # STT End
 
         # LLM Begin
