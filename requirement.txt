@@ -16,3 +16,6 @@ httpx
 python-multipart
 openai
 python-dotenv
+pyaudio
+wave
+websockets

@@ -10,11 +10,9 @@ import cv2 #  TV 화면 캡처를 위함
 from datetime import datetime
 
 # Google Cloud 설정 (환경 변수에 JSON 키 파일 경로 설정 필요)
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "key/hyub_google_cloud_key.json"
 current_directory = os.path.dirname(os.path.abspath(__file__))
 credentials_path = os.path.join(current_directory, "hyub_google_cloud_key.json")
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
-#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/kimhyub/Downloads/STT/key/hyub_google_cloud_key.json"
 
 # export GOOGLE_APPLICATION_CREDENTIALS="key/hyub_google_cloud_key.json"
 
@@ -49,8 +47,8 @@ def recognize_stream():
     global full_transcript
     
     print("🎤 STT 서비스 시작: '새미야', '쌤', '쌤아'를 감지 중...")
-
-    trigger_words = ["새미야", "쌤", "쌤아"] # 트리거 키워드 목록
+    
+    trigger_words = ["세미야", "새미야", "쌤", "쌤아"] # 트리거 키워드 목록
     
     while True:
         # STT 요청에 필요한 오디오 설정
