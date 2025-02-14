@@ -92,7 +92,7 @@ def get_video(video_id: str, db: Session = Depends(get_db)):
 ### 3. (POST) VOD 재생 페이지 - 유저 음성 발화 상품 검색 + 상품 리스트 조회 ###
 @app.post("/api/search_product")
 async def search_product(
-    user_id: int,
+    user_id: str,
     # user_id: int = Query(...), # User ID passed as query parameter
     audio: UploadFile = File(...),  # Audio file passed in the form-data body
     db: Session = Depends(get_db)  # Database session
@@ -364,9 +364,9 @@ client = speech.SpeechClient()
 wake_word = "새미야"
 
 # Set up credentials for Google Cloud.
-current_directory = os.path.dirname(os.path.abspath(__file__))
-credentials_path = os.path.join(current_directory, "hyub_google_cloud_key.json")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
+# current_directory = os.path.dirname(os.path.abspath(__file__))
+# credentials_path = os.path.join(current_directory, "hyub_google_cloud_key.json")
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
 
 
 # Handle new Socket.IO connections.
@@ -389,31 +389,31 @@ async def audio_stream(sid, data):
     # Log the incoming audio stream for debugging purposes.
     print(f"Audio stream received from client {sid} (size: {len(data)} bytes)")
 
-    try:
-        # Wrap the incoming audio data for recognition.
-        audio = speech.RecognitionAudio(content=data)
-        config = speech.RecognitionConfig(
-            encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-            sample_rate_hertz=16000,
-            language_code="ko-KR",
-        )
-        response = client.recognize(config=config, audio=audio)
-        sentence = ""
+    # try:
+    #     # Wrap the incoming audio data for recognition.
+    #     audio = speech.RecognitionAudio(content=data)
+    #     config = speech.RecognitionConfig(
+    #         encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+    #         sample_rate_hertz=16000,
+    #         language_code="ko-KR",
+    #     )
+    #     response = client.recognize(config=config, audio=audio)
+    #     sentence = ""
         
-        # Process the response from Google Cloud.
-        for result in response.results:
-            text = result.alternatives[0].transcript
-            print(f"Recognized: {text}")
-            sentence += " " + text
-            if wake_word in text:
-                # Emit the wake word detected event to the specific client.
-                await sio.emit("wake_word_detected", room=sid)
+    #     # Process the response from Google Cloud.
+    #     for result in response.results:
+    #         text = result.alternatives[0].transcript
+    #         print(f"Recognized: {text}")
+    #         sentence += " " + text
+    #         if wake_word in text:
+    #             # Emit the wake word detected event to the specific client.
+    #             await sio.emit("wake_word_detected", room=sid)
         
-        # Optionally, emit the complete transcription result.
-        await sio.emit("result_data", {"text": sentence.strip()}, room=sid)
+    #     # Optionally, emit the complete transcription result.
+    #     await sio.emit("result_data", {"text": sentence.strip()}, room=sid)
     
-    except Exception as e:
-        print("Error processing audio:", e)
+    # except Exception as e:
+    #     print("Error processing audio:", e)
 
 ##################### AI MODEL #####################
 
