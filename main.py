@@ -110,18 +110,18 @@ async def search_product(
         # image = r"C:\github\ongdal\backend\local_data\find_product_example_scene.png"
         # audio = r"C:\github\ongdal\backend\tools\sample2.wav"
         # # Ensure at least one file is received
-        # if not audio and not image:
-        #     return {"success": False, "message": "No audio or image file received"}
+        if not audio and not image:
+             return {"success": False, "message": "No audio or image file received"}
 
         # # Validate audio file format
-        # if not audio.filename.endswith((".webm", ".mp3", ".wav", ".m4a")): # should be just .wav            
-        #     return {"success": False, "message": "Invalid audio format"}
+        if not audio.filename.endswith((".webm", ".mp3", ".wav", ".m4a")): # should be just .wav            
+             return {"success": False, "message": "Invalid audio format"}
 
         # # Validate image file format
-        # allowed_image_extensions = (".jpg", ".jpeg", ".png")
-        # if image and not image.filename.endswith(allowed_image_extensions):
-        #     return {"success": False, "message": "Invalid image format"}
-        
+        allowed_image_extensions = (".jpg", ".jpeg", ".png")
+        if image and not image.filename.endswith(allowed_image_extensions):
+            return {"success": False, "message": "Invalid image format"}
+
         # Read the file into memory (without saving it)
         audio_bytes = await audio.read()
         audio_buffer = io.BytesIO(audio_bytes)  # Convert to a file-like object
