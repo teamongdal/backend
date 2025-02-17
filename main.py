@@ -32,6 +32,9 @@ import websockets
 from google.cloud import speech
 import socketio
 
+from minsun import minsun_model
+
+
 
 # main.py runs on local machine (localhost:8000)
 # TODO host online to allow connection from frontend (Azure: app-container? 느낌)
@@ -98,13 +101,13 @@ def get_video(video_id: str, db: Session = Depends(get_db)):
 # UPDATE success -> state: allows us to check where error occurs -> multi-turn
 @app.post("/api/search_product")
 async def search_product(
-    user_code: str,
+    user_id: str,
     audio: UploadFile = File(...),  # Audio file
     image: UploadFile = File(...),  # Image file
     db: Session = Depends(get_db)  # Database session
 ):
     try:
-        image = r"C:\github\ongdal\backend\local_data\find_product_example_scene.png"
+        # image = r"C:\github\ongdal\backend\local_data\find_product_example_scene.png"
         # audio = r"C:\github\ongdal\backend\tools\sample2.wav"
         # # Ensure at least one file is received
         # if not audio and not image:
@@ -138,45 +141,73 @@ async def search_product(
         llm_keywords_dict = json.loads(llm_keywords)
         ### LLM End ###
 
+
         ### Detection Model Begin ### - returns {feature_vector, bounding_box, color_vector, output_category}
         # TODO
+        # feature_vector, bounding_box, color_vector, output_category = minsun_model(image) # add minsun_model
         feature_vector, bounding_box, color_vector, output_category = minsun_model(image) # add minsun_model
-        # check if {bounding_box, feature_vector, color_vector, output_category} matches llm_keywords_dict
-        # if not, return error message -> multi-turn 
+        ## @check if {bounding_box, feature_vector, color_vector, output_category} matches llm_keywords_dict
+        ## @if not, return error message -> multi-turn 
         ### Detection Model End ###
         
+
         ### Recommendation Model Begin ### - returns {recommend_list}
         # TODO
         # finds best product code (comparing feature_vector with all product feature_vectors)
         best_product_code = hyub_sung_model(feature_vector) # add hyub_sung_model
-        # finds recommended product codes using the best product code
-        # best_product_entry = db.query(Product).filter(Product.product_code == best_product_code).first()
-
-        # # Initialize the find_product_code list
-        # find_product_code = []
-
-        # # If a matching entry is found, retrieve similar product codes
-        # if best_product_entry:
-        #     find_product_code = [
-        #         best_product_entry.similar_product_1,
-        #         best_product_entry.similar_product_2,
-        #         best_product_entry.similar_product_3
-        #     ]
-            
-        # find_product_code = best_product_code + find_product_code # [det_product_code + recommend_list]
-        # recommend_list = product_list(user_code, find_product_code) # add product_list
-        recommend_list = product_list(user_code, best_product_code)
-
         ### Recommendation Model End ###
-        # ADD original product_code to similar_product_list and pass to product_list
+
+        product_entry = db.query(Product).filter(Product.product_code == best_product_code).first()
+        display_list = []
+        # If a matching entry is found, retrieve similar product codes
+        if product_entry:
+            display_list = [
+                best_product_code,
+                product_entry.similar_product_1,
+                product_entry.similar_product_2,
+                product_entry.similar_product_3
+            ]
+
+        products = db.query(Product).filter(Product.product_code.in_(display_list)).all()
+        
+        # Fetch favorite products for the given user
+        like_product_codes = {fav.product_code for fav in db.query(UserFavorite).filter(UserFavorite.user_id == user_id).all()}
         return {
             "success": True,
             "message": "Returned Recommendation Succesfully",
-            "user_code": user_code,
+            "user_id": user_id,
             "speech_text": transcribed_text,
             "llm_keywords": llm_keywords_dict,
-            "recommendation": recommend_list
+            "feature_vector": feature_vector,
+            "bounding_box": bounding_box,
+            "color_vector": color_vector,
+            "output_category": output_category,
+            "product_list": [
+                {
+                    "product_code": p.product_code,
+                    # "detail_url": p.detail_url,
+                    "product_name": p.product_name,
+                    "product_price": p.product_price,
+                    "discount_rate": p.discount_rate,
+                    "final_price": p.final_price,
+                    "brand_name": p.brand_name,
+                    "brand_image": p.brand_image,
+                    "category": p.category,
+                    "category_sub": p.category_sub,
+                    "product_images": [p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4],
+                    "heart_cnt": p.heart_cnt,
+                    "numof_views": p.numof_views,
+                    "total_sales": p.total_sales,
+                    "review_cnt": p.review_cnt,
+                    "review_rating": p.review_rating,
+                    "reviews": [p.review1, p.review2, p.review3, p.review4, p.review5],
+                    # "similar_products": [p.similar_product_1, p.similar_product_2, p.similar_product_3],
+                    "is_like": p.product_code in like_product_codes  # Check if product is liked by the user
+                }
+                for p in products
+            ]
         }
+
 
     except Exception as e:
         return {"success": False, "message": str(e)}
@@ -227,17 +258,17 @@ def convert_webm_to_wav(audio_buffer: io.BytesIO) -> io.BytesIO:
     return wav_buffer
 
 
-def minsun_model(image: UploadFile) -> str:
-    """
-    Receives an image file and LLM keywords dictionary, and returns the feature_vector, bounding_box, color_vector, and output_category
-    """
-    # Read the image file into memory
-    # image_bytes = image.file.read()
-    feature_vector = "feature_vector"
-    return feature_vector
+# def minsun_model(image: UploadFile):
+#     """
+#     Receives an image file and LLM keywords dictionary, and returns the feature_vector, bounding_box, color_vector, and output_category
+#     """
+#     # Read the image file into memory
+#     # image_bytes = image.file.read()
+#     feature_vector = "feature_vector"
+#     return feature_vector
 
 
-def hyub_sung_model(feature_vector: str) -> str:
+def hyub_sung_model(feature_vector: str):
     """
     Receives feature_vector and returns most similar product_code
     """
@@ -249,8 +280,8 @@ def hyub_sung_model(feature_vector: str) -> str:
 ## (1) AI 모델에서 product_list(user_id, find_product_code) 함수 호출
 ## (2) highlight에서는 "/api/product_list (user_id, find_product_code)"로 호출
 ## TODO remove product_id. use only find_product_id. no query on highlight! 
-@app.get("/api/product_list")
 # def product_list(user_id: str, product_code: Optional[str] = Query(None), find_product_code: Optional[List[str]] = Query(None), db: Session = Depends(get_db)):
+@app.get("/api/product_list")
 def product_list(user_id: str, product_code: str, db: Session = Depends(get_db)):
     # Fetch products matching find_product_code
     #TODO cancel! if (product_id) -> Query on highlights DB for similar_products_id and set this to find_product_id

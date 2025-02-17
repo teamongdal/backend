@@ -33,7 +33,7 @@ def test_search_product():
                 "audio": ("sample.wav", audio_file, "audio/wav"),  # Correct format for FastAPI
                 "image": ("sample.jpg", image_file, "image/jpeg")  # Fix missing comma
             }
-            params = {"user_code": "user_0001"}  # The user_code as a query parameter
+            params = {"user_id": "user_0001"}
 
             # Send the POST request with both files
             response = client.post(f"{BASE_URL}/api/search_product", params=params, files=files)
@@ -87,9 +87,9 @@ def test_post_cart_unlike():
     client.post(f"{BASE_URL}/api/product_like?user_id=user_0001&product_code=hoodie_0279")
 
     # Now test removing the product from the cart
+    params = {"user_id": "user_0001"}
     response = client.post(
-        f"{BASE_URL}/api/cart_unlike?user_id=user_0001",  # user_id passed as a query parameter
-        json=["hoodie_0279"]  # product_codes list passed in JSON body
+        f"{BASE_URL}/api/cart_unlike", params=params, json=["hoodie_0279"]  # product_codes list passed in JSON body
     )
 
     print("Test 9 - POST /api/cart_unlike")
