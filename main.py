@@ -172,16 +172,18 @@ async def search_product(
         
         # Fetch favorite products for the given user
         like_product_codes = {fav.product_code for fav in db.query(UserFavorite).filter(UserFavorite.user_id == user_id).all()}
+        
+        print("DONE!")
+        print("feature_vector: ", feature_vector)
+        print("bounding_box: ", bounding_box)
+        print("color_vector: ", color_vector)
+        
         return {
             "success": True,
             "message": "Returned Recommendation Succesfully",
             "user_id": user_id,
             "speech_text": transcribed_text,
             "llm_keywords": llm_keywords_dict,
-            "feature_vector": feature_vector,
-            "bounding_box": bounding_box,
-            "color_vector": color_vector,
-            "output_category": output_category,
             "product_list": [
                 {
                     "product_code": p.product_code,
@@ -207,7 +209,6 @@ async def search_product(
                 for p in products
             ]
         }
-
 
     except Exception as e:
         return {"success": False, "message": str(e)}

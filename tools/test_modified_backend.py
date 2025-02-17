@@ -4,7 +4,7 @@ import httpx
 BASE_URL = "http://localhost:8000"
 
 # Initialize the HTTP client
-client = httpx.Client()
+client = httpx.Client(timeout=30.0)  # Increase timeout to 30 seconds
 
 # Test 1: GET /api/video_list
 def test_get_video_list():

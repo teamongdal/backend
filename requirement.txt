@@ -17,5 +17,7 @@ python-multipart
 openai
 python-dotenv
 pyaudio
+python-pyaudio
 wave
 websockets
+google-api-python-client
