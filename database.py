@@ -1,6 +1,5 @@
 # backend/database.py -> app_data.db 생성
-# database using SQLAlchemy -> TODO: MySQL로 변경(?)
-
+# database using SQLAlchemy
 ############################################################################################################
 ############################################################################################################
 ############################################################################################################
@@ -83,9 +82,9 @@ class Highlight(Base):
     highlight_idx = Column(Integer, nullable=False)                 # FE에 표시할 순서
     highlight_image_url = Column(String, nullable=False)            # highlight 장면 이미지
     product_code = Column(String, nullable=False)                   # highlight 장면 상품 고유번호
-    similar_product_1 = Column(String, nullable=True)               # 유사 상품 고유번호 1
-    similar_product_2 = Column(String, nullable=True)               # 유사 상품 고유번호 2
-    similar_product_3 = Column(String, nullable=True)               # 유사 상품 고유번호 3
+    # similar_product_1 = Column(String, nullable=True)               # 유사 상품 고유번호 1
+    # similar_product_2 = Column(String, nullable=True)               # 유사 상품 고유번호 2
+    # similar_product_3 = Column(String, nullable=True)               # 유사 상품 고유번호 3
     
     # similar_product_list = Column(Text, nullable=False)           # Store as JSON string / List of product_ids of similar products
     # product_image_url = Column(String, nullable=False)

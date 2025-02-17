@@ -111,6 +111,10 @@ def add_products_to_db():
                     review3=row.get("review3"),
                     review4=row.get("review4"),
                     review5=row.get("review5"),
+                    # TODO CHANGE THIS AFTER RUNNING FAISS
+                    similar_product_1="cardigan_0002",
+                    similar_product_2="cardigan_0231",
+                    similar_product_3="cardigan_0128"
                     # similar_product_1=row.get("similar_product_1"),
                     # similar_product_2=row.get("similar_product_2"),
                     # similar_product_3=row.get("similar_product_3")
@@ -161,9 +165,9 @@ def add_highlights_db():
                 highlight_idx=highlight_idx,
                 highlight_image_url=highlight_image_url,
                 product_code=metadata.get("product_code", ""),
-                similar_product_1=metadata.get("similar_product_1", ""),
-                similar_product_2=metadata.get("similar_product_2", ""),
-                similar_product_3=metadata.get("similar_product_3", "")
+                # similar_product_1=metadata.get("similar_product_1", ""),
+                # similar_product_2=metadata.get("similar_product_2", ""),
+                # similar_product_3=metadata.get("similar_product_3", "")
             )
             db.add(new_highlight)
             # print(f"Added highlight: {filename}")
