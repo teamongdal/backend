@@ -439,7 +439,7 @@ def cart_list(user_id: str, db: Session = Depends(get_db)):
 
 ### 9. (POST) 장바구니 - 찜 삭제 ###
 @app.post("/api/cart_unlike")
-def product_unlike(
+def cart_unlike(
     user_id: str, 
     product_codes: List[str] = Body(...),  # Explicitly specify that product_codes comes from the request body
     db: Session = Depends(get_db)
