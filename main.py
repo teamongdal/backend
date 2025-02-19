@@ -33,6 +33,7 @@ from google.cloud import speech
 import socketio
 
 from minsun import minsun_model
+import ssl
 
 
 
@@ -110,7 +111,7 @@ async def search_product(
         # image = r"C:\github\ongdal\backend\local_data\find_product_example_scene.png"
         # audio = r"C:\github\ongdal\backend\tools\sample2.wav"
         # # Ensure at least one file is received
-        if not audio and not image:
+        if not audio or not image:
              return {"success": False, "message": "No audio or image file received"}
 
         # # Validate audio file format
@@ -156,9 +157,11 @@ async def search_product(
         # finds best product code (comparing feature_vector with all product feature_vectors)
         best_product_code = hyub_sung_model(feature_vector) # add hyub_sung_model
         ### Recommendation Model End ###
-
+        
         product_entry = db.query(Product).filter(Product.product_code == best_product_code).first()
         display_list = []
+        
+        # TODO
         # If a matching entry is found, retrieve similar product codes
         if product_entry:
             display_list = [
@@ -461,7 +464,37 @@ def product_unlike(
         db.commit()
         success_list.append(product_code)
     
-    return {"success": True, "removed": success_list, "not_found": failure_list}
+    products = (
+        db.query(Product)
+        .join(UserFavorite, Product.product_code == UserFavorite.product_code)
+        .filter(UserFavorite.user_id == user_id)
+        .all()
+    )
+        
+    return {"success": True, "removed": success_list, "not_found": failure_list, "cart_list": [
+            {
+                "product_code": p.product_code,
+                "detail_url": p.detail_url,
+                "product_name": p.product_name,
+                # "product_price": p.product_price,
+                # "discount_rate": p.discount_rate,
+                "final_price": p.final_price,
+                "brand_name": p.brand_name,
+                "brand_image": p.brand_image,
+                "category": p.category,
+                "category_sub": p.category_sub,
+                # "product_images": [p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4],
+                # "heart_cnt": p.heart_cnt,
+                # "numof_views": p.numof_views,
+                # "total_sales": p.total_sales,
+                # "review_cnt": p.review_cnt,
+                # "review_rating": p.review_rating,
+                # "reviews": [p.review1, p.review2, p.review3, p.review4, p.review5]
+                # "similar_products": [p.similar_product_1, p.similar_product_2, p.similar_product_3]
+            }
+            for p in products
+        ]
+    }
 
 
 ### 10. (GET) 전체 상품 리스트 페이지 - 전체 상품 조회 ###

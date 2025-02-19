@@ -1,9 +1,6 @@
 {
     "video_id": "video_0002",
     "highlight_idx": 3,
-    "highlight_image_url": "C:/github/ongdal/backend/local_data/highlight_0003_0003.png",
-    "product_code": "blazer_0024",
-    "similar_product_1": "blazer_0026",
-    "similar_product_2": "blazer_0029",
-    "similar_product_3": "blazer_0030"
+    "highlight_image_url": "C:/ongdal/local_data/highlight_image/highlight_0002_000.png",
+    "product_code": "blazer_0026"
 }

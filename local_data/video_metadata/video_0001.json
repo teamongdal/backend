@@ -2,5 +2,5 @@
     "video_id": "video_0001",
     "video_name": "나는 솔로",
     "video_url": "https://ai-shop-bucket.s3.ap-southeast-2.amazonaws.com/vod/나는_SOLO_E151_10m.mp4",
-    "video_image": "C:/github/ongdal/backend/local_data/video_thumbnail/video_0001.jpg"
+    "video_image": "C:/ongdal/local_data/video_thumbnail/video_0001.jpg"
 }

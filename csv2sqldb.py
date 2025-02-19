@@ -67,7 +67,7 @@ def add_products_to_db():
     Assumes CSV column names match the Product table fields.
     """
     project_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_path = os.path.join(project_dir, "1v_final.csv")
+    csv_path = os.path.join(project_dir, "product_combined.csv")
     db = SessionLocal()
     try:
         with open(csv_path, "r", encoding="utf-8") as csv_file:
@@ -112,9 +112,9 @@ def add_products_to_db():
                     review4=row.get("review4"),
                     review5=row.get("review5"),
                     # TODO CHANGE THIS AFTER RUNNING FAISS
-                    similar_product_1="cardigan_0002",
-                    similar_product_2="cardigan_0231",
-                    similar_product_3="cardigan_0128"
+                    similar_product_1="8seconds_cardigan_0001",
+                    similar_product_2="8seconds_cardigan_0002",
+                    similar_product_3="8seconds_cardigan_0003"
                     # similar_product_1=row.get("similar_product_1"),
                     # similar_product_2=row.get("similar_product_2"),
                     # similar_product_3=row.get("similar_product_3")
