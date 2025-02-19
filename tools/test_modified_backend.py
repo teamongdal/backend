@@ -84,12 +84,12 @@ def test_get_all_product_list():
 # Test 9: POST /api/cart_unlike
 def test_post_cart_unlike():
     # Ensure the product is liked before testing unlike
-    client.post(f"{BASE_URL}/api/product_like?user_id=user_0001&product_code=hoodie_0279")
+    client.post(f"{BASE_URL}/api/product_like?user_id=user_0001&product_code=musinsa_blazer_0050")
 
     # Now test removing the product from the cart
     params = {"user_id": "user_0001"}
     response = client.post(
-        f"{BASE_URL}/api/cart_unlike", params=params, json=["hoodie_0279"]  # product_codes list passed in JSON body
+        f"{BASE_URL}/api/cart_unlike", params=params, json=["musinsa_blazer_0050"]  # product_codes list passed in JSON body
     )
 
     print("Test 9 - POST /api/cart_unlike")
@@ -117,6 +117,7 @@ print("")
 test_post_cart_unlike()
 
 # Close the client after all tests
+# test_post_cart_unlike()
 client.close()
 
 # another method of sending APIs
