@@ -35,8 +35,6 @@ import socketio
 from minsun import minsun_model
 import ssl
 
-
-
 # main.py runs on local machine (localhost:8000)
 # TODO host online to allow connection from frontend (Azure: app-container? 느낌)
 
@@ -139,51 +137,53 @@ async def search_product(
 
         ### LLM Begin ###
         llm_keywords = parse_speech_to_json(transcribed_text)
+        # TODO add multi-turn
         llm_keywords_dict = json.loads(llm_keywords)
         ### LLM End ###
 
-
         ### Detection Model Begin ### - returns {feature_vector, bounding_box, color_vector, output_category}
-        # TODO
-        # feature_vector, bounding_box, color_vector, output_category = minsun_model(image) # add minsun_model
-        feature_vector, bounding_box, color_vector, output_category = minsun_model(image) # add minsun_model
-        ## @check if {bounding_box, feature_vector, color_vector, output_category} matches llm_keywords_dict
-        ## @if not, return error message -> multi-turn 
+        # feature_vector, bounding_box, color_vector, output_category = minsun_model(image) # add minsun_model <- 2/20/2025: UPDATE
+        similar_product_list = []
+        myeongpum_code, similar_product_list = minsun_model(image)
+        ## # TODO: @ check if {bounding_box, feature_vector, color_vector, output_category} matches llm_keywords_dict
+        ## @ if not, return error message -> multi-turn 
         ### Detection Model End ###
         
-
         ### Recommendation Model Begin ### - returns {recommend_list}
-        # TODO
+        # TODO  
         # finds best product code (comparing feature_vector with all product feature_vectors)
-        best_product_code = hyub_sung_model(feature_vector) # add hyub_sung_model
+        # best_product_code = hyub_sung_model(feature_vector) # add hyub_sung_model <- 2/20/2025: REMOVE
         ### Recommendation Model End ###
         
-        product_entry = db.query(Product).filter(Product.product_code == best_product_code).first()
-        display_list = []
+        # product_entry = db.query(Product).filter(Product.product_code == best_product_code).first()
+        # display_list = []
         
-        # TODO
-        # If a matching entry is found, retrieve similar product codes
-        if product_entry:
-            display_list = [
-                best_product_code,
-                product_entry.similar_product_1,
-                product_entry.similar_product_2,
-                product_entry.similar_product_3
-            ]
+        # # TODO
+        # # If a matching entry is found, retrieve similar product codes
+        # if product_entry:
+        #     display_list = [
+        #         best_product_code,
+        #         product_entry.similar_product_1,
+        #         product_entry.similar_product_2,
+        #         product_entry.similar_product_3
+        #     ]
+
+        # NEW
+        display_list = myeongpum_code + similar_product_list
 
         products = db.query(Product).filter(Product.product_code.in_(display_list)).all()
         
         # Fetch favorite products for the given user
         like_product_codes = {fav.product_code for fav in db.query(UserFavorite).filter(UserFavorite.user_id == user_id).all()}
         
-        print("DONE!")
-        print("feature_vector: ", feature_vector)
-        print("bounding_box: ", bounding_box)
-        print("color_vector: ", color_vector)
+        print("Search Product Process DONE")
+        # print("feature_vector: ", feature_vector)
+        # print("bounding_box: ", bounding_box)
+        # print("color_vector: ", color_vector)
         
         return {
             "success": True,
-            "message": "Returned Recommendation Succesfully",
+            "message": "Search Product Return Success",
             "user_id": user_id,
             "speech_text": transcribed_text,
             "llm_keywords": llm_keywords_dict,
@@ -272,25 +272,24 @@ def convert_webm_to_wav(audio_buffer: io.BytesIO) -> io.BytesIO:
 #     return feature_vector
 
 
-def hyub_sung_model(feature_vector: str):
-    """
-    Receives feature_vector and returns most similar product_code
-    """
-    product_code = "cardigan_0022"
-    return product_code
+# def hyub_sung_model(feature_vector: str):
+#     """
+#     Receives feature_vector and returns most similar product_code
+#     """
+#     product_code = "cardigan_0022"
+#     return product_code
 
 
 ### 4. (GET) 상품 검색 결과 페이지 - 상품 리스트 조회 (연동화를 위해 AI 모델 대체하는 함수) ###
 ## (1) AI 모델에서 product_list(user_id, find_product_code) 함수 호출
 ## (2) highlight에서는 "/api/product_list (user_id, find_product_code)"로 호출
-## TODO remove product_id. use only find_product_id. no query on highlight! 
-# def product_list(user_id: str, product_code: Optional[str] = Query(None), find_product_code: Optional[List[str]] = Query(None), db: Session = Depends(get_db)):
 @app.get("/api/product_list")
 def product_list(user_id: str, product_code: str, db: Session = Depends(get_db)):
+# def product_list(user_id: str, product_code: Optional[str] = Query(None), find_product_code: Optional[List[str]] = Query(None), db: Session = Depends(get_db)):
     # Fetch products matching find_product_code
     #TODO cancel! if (product_id) -> Query on highlights DB for similar_products_id and set this to find_product_id
     #TODO cancel! if (find_product_id) -> do nothing.
-    #TODO cancel! ptimization: check if product_code in highlights DB before running AI model
+    #TODO cancel! optimization: check if product_code in highlights DB before running AI model
 
     # if product_code:
     #     find_product_code = [product_code] + find_product_code
@@ -349,7 +348,6 @@ def product_list(user_id: str, product_code: str, db: Session = Depends(get_db))
 ### 5. (GET) 상품 상세 페이지 - 상품 상세 조회 ### 
 # 이건 기존 ("api/product_list")에서 'detail' array에서 이미지 url을 받아와서 보여주기 (frontend 처리)
 ### REMOVE END ###
-
 
 ### 6. (POST) 상품 찜하기 ###
 @app.post("/api/product_like")
@@ -594,14 +592,6 @@ async def audio_stream(sid, data):
     
     # except Exception as e:
     #     print("Error processing audio:", e)
-
-##################### AI MODEL #####################
-
-### TODO AI 모델 (1) - LLM (Captured Audio + Video Frame 받아서 LLM 처리) / DB에 있는 제일 유사한 옷의 product_id 반환 ###
-
-### TODO AI 모델 (2) - 제일 유사한 옷의 product_id를 받아 / DB에 있는 유사한 옷 5개의 product_id 반환 (아니면 유사 threshold 넘는 상품들) ###
-
-### TODO AI 모델 (3) - ? ###
 
 ##################### initialize backend server #####################
 

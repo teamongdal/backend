@@ -25,7 +25,8 @@ def test_search_product():
     try:
         # Sample file paths
         audio_file_path = r"./tools/sample2.wav"
-        image_file_path = r"./tools/find_product_example_scene.png"
+        # image_file_path = r"./tools/find_product_example_scene.png"
+        image_file_path = r"./tools/sky_castle_scene.png"
 
         # Open both files in binary mode for uploading
         with open(audio_file_path, "rb") as audio_file, open(image_file_path, "rb") as image_file:
@@ -48,21 +49,21 @@ def test_search_product():
 
 # Test 4: GET /api/product_list
 def test_get_product_list():
-    response = client.get(f"{BASE_URL}/api/product_list?user_id=user_0001&product_code=blazer_0003")
+    response = client.get(f"{BASE_URL}/api/product_list?user_id=user_0001&product_code=musinsa_blazer_0003")
     print("Test 4 - GET /api/product_list")
     print("Status Code:", response.status_code)
     print("Response JSON:", response.json())
 
 # Test 5: POST /api/product_like
 def test_post_product_like():
-    response = client.post(f"{BASE_URL}/api/product_like?user_id=user_0001&product_code=hoodie_0279")
+    response = client.post(f"{BASE_URL}/api/product_like?user_id=user_0001&product_code=musinsa_hoodie_0001")
     print("Test 5 - POST /api/product_like")
     print("Status Code:", response.status_code)
     print("Response JSON:", response.json())
 
 # Test 6: POST /api/product_unlike
 def test_post_product_unlike():
-    response = client.post(f"{BASE_URL}/api/product_unlike?user_id=user_0001&product_code=hoodie_0279")
+    response = client.post(f"{BASE_URL}/api/product_unlike?user_id=user_0001&product_code=musinsa_hoodie_0001")
     print("Test 6 - POST /api/product_unlike")
     print("Status Code:", response.status_code)
     print("Response JSON:", response.json())
@@ -84,12 +85,12 @@ def test_get_all_product_list():
 # Test 9: POST /api/cart_unlike
 def test_post_cart_unlike():
     # Ensure the product is liked before testing unlike
-    client.post(f"{BASE_URL}/api/product_like?user_id=user_0001&product_code=hoodie_0279")
+    client.post(f"{BASE_URL}/api/product_like?user_id=user_0001&product_code=musinsa_hoodie_0001")
 
     # Now test removing the product from the cart
     params = {"user_id": "user_0001"}
     response = client.post(
-        f"{BASE_URL}/api/cart_unlike", params=params, json=["hoodie_0279"]  # product_codes list passed in JSON body
+        f"{BASE_URL}/api/cart_unlike", params=params, json=["musinsa_hoodie_0001"]  # product_codes list passed in JSON body
     )
 
     print("Test 9 - POST /api/cart_unlike")

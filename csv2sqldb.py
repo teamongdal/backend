@@ -111,6 +111,7 @@ def add_products_to_db():
                     review3=row.get("review3"),
                     review4=row.get("review4"),
                     review5=row.get("review5"),
+                    gorgeous=row.get("gorgeous"),
                     # TODO CHANGE THIS AFTER RUNNING FAISS
                     similar_product_1="8seconds_cardigan_0001",
                     similar_product_2="8seconds_cardigan_0002",

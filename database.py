@@ -69,6 +69,7 @@ class Product(Base):
     review3 = Column(Text, nullable=True)                       # Review text 3
     review4 = Column(Text, nullable=True)                       # Review text 4
     review5 = Column(Text, nullable=True)                       # Review text 5
+    gorgeous = Column(Integer, nullable=True)                 # Gorgeous rating
     similar_product_1 = Column(String, nullable=True)           # Similar product 1
     similar_product_2 = Column(String, nullable=True)           # Similar product 2
     similar_product_3 = Column(String, nullable=True)           # Similar product 3
