@@ -1,3 +1,11 @@
 llm/.env
 hyub_google_cloud_key.json
 df2matchrcnn
+precombined_db/
+csv_image_tools/
+minsun_old.py
+minsun.py
+myeongpum_test_2048.npy
+myeongpum_test_cat&color&clip.json
+ver2_2048.npy
+ver2_cat&color&clip.json
