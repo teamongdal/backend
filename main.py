@@ -143,8 +143,9 @@ async def search_product(
 
         ### Detection Model Begin ### - returns {feature_vector, bounding_box, color_vector, output_category}
         # feature_vector, bounding_box, color_vector, output_category = minsun_model(image) # add minsun_model <- 2/20/2025: UPDATE
-        similar_product_list = []
-        myeongpum_code, similar_product_list = minsun_model(image)
+        # similar_product_list = []
+        # myeongpum_code, similar_product_list = minsun_model(image)
+        display_list = minsun_model(image)
         ## # TODO: @ check if {bounding_box, feature_vector, color_vector, output_category} matches llm_keywords_dict
         ## @ if not, return error message -> multi-turn 
         ### Detection Model End ###
@@ -169,7 +170,7 @@ async def search_product(
         #     ]
 
         # NEW
-        display_list = myeongpum_code + similar_product_list
+        # display_list = [myeongpum_code] + similar_product_list
 
         products = db.query(Product).filter(Product.product_code.in_(display_list)).all()
         
