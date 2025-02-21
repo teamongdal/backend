@@ -5,6 +5,16 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from database import SessionLocal, Video, UserFavorite, Product, Highlight, UserVideo
 
+def transform_image_path(image_path):
+    # Check if image_path is "없음"
+    if image_path == "없음":
+        return image_path
+    if image_path:
+        # Remove the "C:/ongdal/" prefix from the path
+        relative_path = image_path.replace("C:/ongdal/", "")
+        # Prepend the IP, port, and static prefix
+        return f"static/{relative_path}"
+    
 def add_video_to_db():
     """
     Process video metadata files named like video_XXXX.json and use the corresponding
@@ -12,8 +22,8 @@ def add_video_to_db():
     Assumes metadata has keys: video_id, video_name, video_url, video_image.
     """
     project_dir = os.path.dirname(os.path.abspath(__file__))
-    metadata_dir = os.path.join(project_dir, "local_data", "video_metadata")
-    thumbnail_dir = os.path.join(project_dir, "local_data", "video_thumbnail")
+    metadata_dir = os.path.join(project_dir, "static", "local_data", "video_metadata")
+    thumbnail_dir = os.path.join(project_dir, "static", "local_data", "video_thumbnail")
 
     db = SessionLocal()
     try:
@@ -48,7 +58,7 @@ def add_video_to_db():
                 video_id=video_id,
                 video_name=video_name,
                 video_url=video_url,
-                video_image=video_image
+                video_image=transform_image_path(video_image)
             )
             db.add(new_video)
 
@@ -60,6 +70,8 @@ def add_video_to_db():
     finally:
         db.close()
 
+
+    return None
 
 def add_products_to_db():
     """
@@ -97,10 +109,10 @@ def add_products_to_db():
                     brand_image=row.get("brand_image"),
                     category=row.get("category"),
                     category_sub=row.get("category_sub"),
-                    product_images_1=row.get("product_images_1"),
-                    product_images_2=row.get("product_images_2"),
-                    product_images_3=row.get("product_images_3"),
-                    product_images_4=row.get("product_images_4"),
+                    product_images_1=transform_image_path(row.get("product_images_1")),
+                    product_images_2=transform_image_path(row.get("product_images_2")),
+                    product_images_3=transform_image_path(row.get("product_images_3")),
+                    product_images_4=transform_image_path(row.get("product_images_4")),
                     heart_cnt=row.get("heart_cnt"),
                     numof_views=row.get("numof_views"),
                     total_sales=row.get("total_sales"),
@@ -139,8 +151,8 @@ def add_highlights_db():
     The highlight image filename is joined with the highlight_image folder.
     """
     project_dir = os.path.dirname(os.path.abspath(__file__))
-    metadata_dir = os.path.join(project_dir, "local_data", "highlight_metadata")
-    image_dir = os.path.join(project_dir, "local_data", "highlight_image")
+    metadata_dir = os.path.join(project_dir, "static", "local_data", "highlight_metadata")
+    image_dir = os.path.join(project_dir, "static", "local_data", "highlight_image")
     db = SessionLocal()
     try:
         for filename in os.listdir(metadata_dir):
@@ -164,7 +176,7 @@ def add_highlights_db():
             new_highlight = Highlight(
                 video_id=video_id,
                 highlight_idx=highlight_idx,
-                highlight_image_url=highlight_image_url,
+                highlight_image_url=transform_image_path(highlight_image_url),
                 product_code=metadata.get("product_code", ""),
                 # similar_product_1=metadata.get("similar_product_1", ""),
                 # similar_product_2=metadata.get("similar_product_2", ""),
@@ -188,7 +200,7 @@ def add_uservideo_to_db():
     Assumes each JSON contains 'user_id' and 'video_id' (which may be a list).
     """
     project_dir = os.path.dirname(os.path.abspath(__file__))
-    uservideo_dir = os.path.join(project_dir, "local_data", "user_video")
+    uservideo_dir = os.path.join(project_dir, "static", "local_data", "user_video")
     db = SessionLocal()
     try:
         for filename in os.listdir(uservideo_dir):
@@ -232,7 +244,7 @@ def add_userfavorite_to_db():
     Assumes each JSON contains 'user_id' and 'product_code' (which may be a list).
     """
     project_dir = os.path.dirname(os.path.abspath(__file__))
-    userfavorite_dir = os.path.join(project_dir, "local_data", "user_favorite")
+    userfavorite_dir = os.path.join(project_dir, "static", "local_data", "user_favorite")
     db = SessionLocal()
     try:
         for filename in os.listdir(userfavorite_dir):

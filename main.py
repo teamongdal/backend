@@ -41,6 +41,8 @@ import ssl
 # intiaite FastAPI app
 app = FastAPI()
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 # to resolve CORS
 app.add_middleware(
     CORSMiddleware,
@@ -49,6 +51,23 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ip = "http://192.168.141.45"
+ip = "localhost"
+
+def build_image_url(relative_path: str) -> str:
+    if relative_path == "없음":
+        return relative_path
+    base_url = f"{ip}:8000/"
+    return f"{base_url}{relative_path}"
+
+def build_image_url_list(relative_paths: list) -> list:
+    base_url = f"{ip}:8000/"
+    return [
+        path if path == "없음" else f"{base_url}{path}"
+        for path in relative_paths if path
+    ]
+
 
 ### SQLAlchemy DB ###
 # Dependency to get DB session
@@ -200,7 +219,7 @@ async def search_product(
                     "brand_image": p.brand_image,
                     "category": p.category,
                     "category_sub": p.category_sub,
-                    "product_images": [p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4],
+                    "product_images": build_image_url_list([p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4]),
                     "heart_cnt": p.heart_cnt,
                     "numof_views": p.numof_views,
                     "total_sales": p.total_sales,
@@ -331,7 +350,7 @@ def product_list(user_id: str, product_code: str, db: Session = Depends(get_db))
                 "brand_image": p.brand_image,
                 "category": p.category,
                 "category_sub": p.category_sub,
-                "product_images": [p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4],
+                "product_images": build_image_url_list([p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4]),
                 "heart_cnt": p.heart_cnt,
                 "numof_views": p.numof_views,
                 "total_sales": p.total_sales,
@@ -422,7 +441,7 @@ def cart_list(user_id: str, db: Session = Depends(get_db)):
                 "brand_image": p.brand_image,
                 "category": p.category,
                 "category_sub": p.category_sub,
-                "product_image": p.product_images_1,
+                "product_image": build_image_url(p.product_images_1),
                 # "product_images": [p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4],
                 # "heart_cnt": p.heart_cnt,
                 # "numof_views": p.numof_views,
@@ -483,7 +502,7 @@ def cart_unlike(
                 "brand_image": p.brand_image,
                 "category": p.category,
                 "category_sub": p.category_sub,
-                "product_image": p.product_images_1,
+                "product_image": build_image_url(p.product_images_1),
                 # "product_images": [p.product_images_1, p.product_images_2, p.product_images_3, p.product_images_4],
                 # "heart_cnt": p.heart_cnt,
                 # "numof_views": p.numof_views,
@@ -517,7 +536,7 @@ def get_highlight_products(video_id: str, db: Session = Depends(get_db)):
                 "highlight_idx": h.highlight_idx,
                 "highlight_image_url": h.highlight_image_url,
                 "product_code": h.product_code,
-                "product_image_url  ": products[h.product_code].product_images_1,
+                "product_image_url  ": build_image_url(products[h.product_code].product_images_1),
                 "brand_name": products[h.product_code].brand_name,
                 "product_name": products[h.product_code].product_name,
                 "final_price": products[h.product_code].final_price,
