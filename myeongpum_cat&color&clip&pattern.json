@@ -1,0 +1,847 @@
+[
+    {
+        "detail_url": "https://reehue.com/goods/?at=goods_view&num=63&ccd=1&cid=15",
+        "product_name": "PERI DRESS",
+        "product_price": "1,500,000원",
+        "discount_rate": "0",
+        "final_price": "1,500,000원",
+        "brand_name": "REEHUE",
+        "brand_image": "asddf",
+        "category": "원피스/스커트",
+        "category_sub": "맥시원피스",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_maxionepiece_0001_01.jpg",
+        "product_images_2": "C:/ongdal/local_data/product_combined_images/manual_maxionepiece_0001_02.jpg",
+        "product_images_3": "없음",
+        "product_images_4": "없음",
+        "product_code": "manual_maxionepiece_0001",
+        "heart_cnt": "70",
+        "numof_views": "800",
+        "total_sales": "없음",
+        "review_cnt": "4",
+        "review_rating": "4.8",
+        "review1": "좋아요",
+        "review2": "너무 이뻐요",
+        "review3": "I like it!",
+        "review4": "Very GOOOOD",
+        "review5": "없음",
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    139,
+                    344,
+                    445,
+                    977
+                ],
+                "score": 0.9997279047966003,
+                "category": "vest dress",
+                "color_vector": [
+                    93,
+                    90,
+                    16
+                ],
+                "texture_vector": [
+                    0.23910415172576904,
+                    0.24631842970848083,
+                    0.20822781324386597
+                ],
+                "season_vector": [
+                    0.22637873888015747,
+                    0.22877904772758484,
+                    0.22624686360359192,
+                    0.21750083565711975
+                ],
+                "mood_vector": [
+                    0.21014055609703064,
+                    0.25432804226875305,
+                    0.2061496376991272
+                ],
+                "pattern_vector": [
+                    0.23541945219039917,
+                    0.18578702211380005,
+                    0.18086770176887512,
+                    0.16966763138771057
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://noirlarmes.com/w-leather/?idx=754",
+        "product_name": "VELOURS OF DESIRE#1-3",
+        "product_price": "5,160,000원",
+        "discount_rate": "0",
+        "final_price": "5,160,000원",
+        "brand_name": "noir larmes",
+        "brand_image": "없음",
+        "category": "아우터",
+        "category_sub": "레더/라이더스 재킷",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_leather_0001_01.jpg",
+        "product_images_2": "C:/ongdal/local_data/product_combined_images/manual_leather_0001_02.jpg",
+        "product_images_3": "C:/ongdal/local_data/product_combined_images/manual_leather_0001_03.jpg",
+        "product_images_4": "C:/ongdal/local_data/product_combined_images/manual_leather_0001_04.jpg",
+        "product_code": "manual_leather_0001",
+        "heart_cnt": "30",
+        "numof_views": "300",
+        "total_sales": "30",
+        "review_cnt": "2",
+        "review_rating": "5",
+        "review1": "good",
+        "review2": "excellent!",
+        "review3": "없음",
+        "review4": "없음",
+        "review5": "없음",
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    86,
+                    41,
+                    675,
+                    652
+                ],
+                "score": 0.9907970428466797,
+                "category": "long sleeve top",
+                "color_vector": [
+                    135,
+                    7,
+                    109
+                ],
+                "texture_vector": [
+                    0.24498796463012695,
+                    0.22219428420066833,
+                    0.20465783774852753
+                ],
+                "season_vector": [
+                    0.23095974326133728,
+                    0.21917568147182465,
+                    0.21856257319450378,
+                    0.2169102430343628
+                ],
+                "mood_vector": [
+                    0.22154898941516876,
+                    0.2402774691581726,
+                    0.2335963249206543
+                ],
+                "pattern_vector": [
+                    0.15835419297218323,
+                    0.16280554234981537,
+                    0.1234343945980072,
+                    0.18645112216472626
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "없음",
+        "product_name": "울 혼방 사이드 플랩 코트",
+        "product_price": "1,190,000원",
+        "discount_rate": "40%",
+        "final_price": "714,000원",
+        "brand_name": "MICHAA",
+        "brand_image": "없음",
+        "category": "아우터",
+        "category_sub": "환절기 코트",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_coat_0001_01.jpg",
+        "product_images_2": "없음",
+        "product_images_3": "없음",
+        "product_images_4": "없음",
+        "product_code": "manual_coat_0001",
+        "heart_cnt": "없음",
+        "numof_views": "없음",
+        "total_sales": "없음",
+        "review_cnt": "없음",
+        "review_rating": "없음",
+        "review1": "없음",
+        "review2": "없음",
+        "review3": "없음",
+        "review4": "없음",
+        "review5": "없음",
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    279,
+                    178,
+                    686,
+                    1074
+                ],
+                "score": 0.9804374575614929,
+                "category": "long sleeve dress",
+                "color_vector": [
+                    15,
+                    13,
+                    225
+                ],
+                "texture_vector": [
+                    0.21249064803123474,
+                    0.22068391740322113,
+                    0.1668795943260193
+                ],
+                "season_vector": [
+                    0.2199876308441162,
+                    0.2055719494819641,
+                    0.21863102912902832,
+                    0.2129388004541397
+                ],
+                "mood_vector": [
+                    0.2154248058795929,
+                    0.24338720738887787,
+                    0.1672283262014389
+                ],
+                "pattern_vector": [
+                    0.20939357578754425,
+                    0.15625911951065063,
+                    0.14407947659492493,
+                    0.15030382573604584
+                ]
+            },
+            {
+                "box": [
+                    287,
+                    483,
+                    678,
+                    1109
+                ],
+                "score": 0.5421995520591736,
+                "category": "skirt",
+                "color_vector": [
+                    16,
+                    14,
+                    223
+                ],
+                "texture_vector": [
+                    0.21890221536159515,
+                    0.232023224234581,
+                    0.17450658977031708
+                ],
+                "season_vector": [
+                    0.22823898494243622,
+                    0.21544183790683746,
+                    0.22567352652549744,
+                    0.21089637279510498
+                ],
+                "mood_vector": [
+                    0.21913230419158936,
+                    0.25353533029556274,
+                    0.18610495328903198
+                ],
+                "pattern_vector": [
+                    0.22558020055294037,
+                    0.1621735692024231,
+                    0.14170724153518677,
+                    0.15610769391059875
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2403530263",
+        "product_name": "24SS 셀린느 스웨터 2AD4D012W 01OB",
+        "product_price": "2,180,000원",
+        "discount_rate": "41%",
+        "final_price": "1,271,400원",
+        "brand_name": "CELINE",
+        "brand_image": null,
+        "category": "상의",
+        "category_sub": "니트/스웨터",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_knit_0001_01.jpg",
+        "product_images_2": "없음",
+        "product_images_3": "없음",
+        "product_images_4": "없음",
+        "product_code": "manual_knit_0001",
+        "heart_cnt": "없음",
+        "numof_views": "없음",
+        "total_sales": "없음",
+        "review_cnt": "없음",
+        "review_rating": "없음",
+        "review1": "없음",
+        "review2": "없음",
+        "review3": "없음",
+        "review4": "없음",
+        "review5": "없음",
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    82,
+                    193,
+                    475,
+                    653
+                ],
+                "score": 0.9979775547981262,
+                "category": "long sleeve top",
+                "color_vector": [
+                    26,
+                    11,
+                    189
+                ],
+                "texture_vector": [
+                    0.21834489703178406,
+                    0.22325339913368225,
+                    0.17513689398765564
+                ],
+                "season_vector": [
+                    0.21257732808589935,
+                    0.21458426117897034,
+                    0.21042561531066895,
+                    0.21003422141075134
+                ],
+                "mood_vector": [
+                    0.22634387016296387,
+                    0.21124589443206787,
+                    0.20417994260787964
+                ],
+                "pattern_vector": [
+                    0.1722179353237152,
+                    0.24771109223365784,
+                    0.15526562929153442,
+                    0.1571025252342224
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://ec-jp.allu-official.com/products/a3261194",
+        "product_name": "후드 플란넬 재킷",
+        "product_price": "3,500,000원",
+        "discount_rate": "0%",
+        "final_price": "3,500,000원",
+        "brand_name": "GUCCI",
+        "brand_image": null,
+        "category": "아우터",
+        "category_sub": "슈트/블레이저",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_blazer_0001_01.jpg",
+        "product_images_2": "없음",
+        "product_images_3": "없음",
+        "product_images_4": "없음",
+        "product_code": "manual_blazer_0001",
+        "heart_cnt": "없음",
+        "numof_views": "없음",
+        "total_sales": "없음",
+        "review_cnt": "없음",
+        "review_rating": "없음",
+        "review1": "없음",
+        "review2": "없음",
+        "review3": "없음",
+        "review4": "없음",
+        "review5": "없음",
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    87,
+                    16,
+                    378,
+                    405
+                ],
+                "score": 0.999545156955719,
+                "category": "long sleeve top",
+                "color_vector": [
+                    18,
+                    48,
+                    133
+                ],
+                "texture_vector": [
+                    0.22378085553646088,
+                    0.20283961296081543,
+                    0.15979383885860443
+                ],
+                "season_vector": [
+                    0.2110809087753296,
+                    0.21727246046066284,
+                    0.23032644391059875,
+                    0.21706107258796692
+                ],
+                "mood_vector": [
+                    0.21970394253730774,
+                    0.21563675999641418,
+                    0.19765222072601318
+                ],
+                "pattern_vector": [
+                    0.17768125236034393,
+                    0.16660837829113007,
+                    0.12696290016174316,
+                    0.25237131118774414
+                ]
+            },
+            {
+                "box": [
+                    141,
+                    334,
+                    316,
+                    458
+                ],
+                "score": 0.93809574842453,
+                "category": "trousers",
+                "color_vector": [
+                    21,
+                    46,
+                    128
+                ],
+                "texture_vector": [
+                    0.24070405960083008,
+                    0.23043540120124817,
+                    0.14636459946632385
+                ],
+                "season_vector": [
+                    0.236872136592865,
+                    0.2205715775489807,
+                    0.23074153065681458,
+                    0.23142805695533752
+                ],
+                "mood_vector": [
+                    0.24288228154182434,
+                    0.2435765117406845,
+                    0.19733989238739014
+                ],
+                "pattern_vector": [
+                    0.19320765137672424,
+                    0.19585423171520233,
+                    0.15394291281700134,
+                    0.2622705101966858
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://romanchic.com/product/rc21k196/1964/",
+        "product_name": "패치워크 타래꽃 보이핏 볼륨 페이크투피스 디자인 셔링 스웨터",
+        "product_price": "439,000원",
+        "discount_rate": "0%",
+        "final_price": "439,000원",
+        "brand_name": "ROMANCHIC",
+        "brand_image": null,
+        "category": "상의",
+        "category_sub": "니트/스웨터",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_knit_0002_01.jpg",
+        "product_images_2": "없음",
+        "product_images_3": "없음",
+        "product_images_4": "없음",
+        "product_code": "manual_knit_0002",
+        "heart_cnt": "없음",
+        "numof_views": "없음",
+        "total_sales": "없음",
+        "review_cnt": "없음",
+        "review_rating": "없음",
+        "review1": "없음",
+        "review2": "없음",
+        "review3": "없음",
+        "review4": "없음",
+        "review5": "없음",
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    332,
+                    399,
+                    673,
+                    893
+                ],
+                "score": 0.9949870109558105,
+                "category": "long sleeve top",
+                "color_vector": [
+                    107,
+                    72,
+                    169
+                ],
+                "texture_vector": [
+                    0.22424334287643433,
+                    0.23075629770755768,
+                    0.16943374276161194
+                ],
+                "season_vector": [
+                    0.23423650860786438,
+                    0.21959277987480164,
+                    0.22965092957019806,
+                    0.24108006060123444
+                ],
+                "mood_vector": [
+                    0.21535208821296692,
+                    0.24073447287082672,
+                    0.2148953080177307
+                ],
+                "pattern_vector": [
+                    0.21374288201332092,
+                    0.18255570530891418,
+                    0.14377035200595856,
+                    0.17271584272384644
+                ]
+            },
+            {
+                "box": [
+                    363,
+                    692,
+                    632,
+                    935
+                ],
+                "score": 0.9922916293144226,
+                "category": "shorts",
+                "color_vector": [
+                    107,
+                    67,
+                    164
+                ],
+                "texture_vector": [
+                    0.20706108212471008,
+                    0.22264228761196136,
+                    0.1527750939130783
+                ],
+                "season_vector": [
+                    0.20871073007583618,
+                    0.2063228040933609,
+                    0.20672160387039185,
+                    0.21852953732013702
+                ],
+                "mood_vector": [
+                    0.19748324155807495,
+                    0.2039240002632141,
+                    0.19861678779125214
+                ],
+                "pattern_vector": [
+                    0.21482868492603302,
+                    0.1872645914554596,
+                    0.13973698019981384,
+                    0.175741046667099
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://kr.revolve.com/r/mobile/DisplayProduct.jsp?aliasURL=mobile/paige-ashtyn-jacket-in-cappucino/dp/PAIG-WO81&product=PAIG-WO81&_idB_=VmYzUUxUUHMzYjc4R3pnVmpEY05lbXlGbXRndTY2",
+        "product_name": "ASHTYN 자켓",
+        "product_price": "1,580,000원",
+        "discount_rate": "0%",
+        "final_price": "1,580,000원",
+        "brand_name": "PAIGE",
+        "brand_image": null,
+        "category": "아우터",
+        "category_sub": "슈트/블레이저",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_blazer_0015_01.jpg",
+        "product_images_2": "없음",
+        "product_images_3": "없음",
+        "product_images_4": "없음",
+        "product_code": "manual_blazer_0015",
+        "heart_cnt": null,
+        "numof_views": null,
+        "total_sales": null,
+        "review_cnt": null,
+        "review_rating": null,
+        "review1": null,
+        "review2": null,
+        "review3": null,
+        "review4": null,
+        "review5": null,
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    241,
+                    975,
+                    762,
+                    1449
+                ],
+                "score": 0.9997910857200623,
+                "category": "trousers",
+                "color_vector": [
+                    107,
+                    143,
+                    141
+                ],
+                "texture_vector": [
+                    0.22992178797721863,
+                    0.20882678031921387,
+                    0.16791921854019165
+                ],
+                "season_vector": [
+                    0.22563382983207703,
+                    0.21354442834854126,
+                    0.21451997756958008,
+                    0.20892442762851715
+                ],
+                "mood_vector": [
+                    0.23961131274700165,
+                    0.22392407059669495,
+                    0.19048002362251282
+                ],
+                "pattern_vector": [
+                    0.16639021039009094,
+                    0.14361095428466797,
+                    0.115817129611969,
+                    0.14123843610286713
+                ]
+            },
+            {
+                "box": [
+                    105,
+                    301,
+                    875,
+                    1364
+                ],
+                "score": 0.9965429902076721,
+                "category": "long sleeve outwear",
+                "color_vector": [
+                    6,
+                    132,
+                    79
+                ],
+                "texture_vector": [
+                    0.23059475421905518,
+                    0.21122094988822937,
+                    0.16911330819129944
+                ],
+                "season_vector": [
+                    0.21644625067710876,
+                    0.21697105467319489,
+                    0.2332891821861267,
+                    0.21312035620212555
+                ],
+                "mood_vector": [
+                    0.2226792871952057,
+                    0.2158077359199524,
+                    0.18874216079711914
+                ],
+                "pattern_vector": [
+                    0.20894744992256165,
+                    0.1312960982322693,
+                    0.10147114098072052,
+                    0.13309666514396667
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://kr.revolve.com/r/mobile/DisplayProduct.jsp?aliasURL=mobile/et-ochs-catalina-dress-in-scarlet/dp/ETOR-WD10&product=ETOR-WD10&_idB_=TUpOcXd3SEYxODFtYVd2RTFsQ1lGS1hKdnJIcE1o",
+        "product_name": "CATALINA 원피스",
+        "product_price": "643,000원",
+        "discount_rate": "0%",
+        "final_price": "643,000원",
+        "brand_name": "ET OCHS",
+        "brand_image": null,
+        "category": "원피스/스커트",
+        "category_sub": "맥시원피스",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_maxionepiece_0011_01.jpg",
+        "product_images_2": "없음",
+        "product_images_3": "없음",
+        "product_images_4": "없음",
+        "product_code": "manual_maxionepiece_0011",
+        "heart_cnt": null,
+        "numof_views": null,
+        "total_sales": null,
+        "review_cnt": null,
+        "review_rating": null,
+        "review1": null,
+        "review2": null,
+        "review3": null,
+        "review4": null,
+        "review5": null,
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    301,
+                    198,
+                    638,
+                    1223
+                ],
+                "score": 0.9991624355316162,
+                "category": "vest dress",
+                "color_vector": [
+                    2,
+                    218,
+                    220
+                ],
+                "texture_vector": [
+                    0.2527828812599182,
+                    0.24792875349521637,
+                    0.19525733590126038
+                ],
+                "season_vector": [
+                    0.23866459727287292,
+                    0.2393149435520172,
+                    0.238437682390213,
+                    0.23969188332557678
+                ],
+                "mood_vector": [
+                    0.23471376299858093,
+                    0.2563410699367523,
+                    0.23416979610919952
+                ],
+                "pattern_vector": [
+                    0.24863627552986145,
+                    0.17034566402435303,
+                    0.16222381591796875,
+                    0.14814798533916473
+                ]
+            },
+            {
+                "box": [
+                    303,
+                    428,
+                    628,
+                    1226
+                ],
+                "score": 0.7892130017280579,
+                "category": "skirt",
+                "color_vector": [
+                    2,
+                    218,
+                    220
+                ],
+                "texture_vector": [
+                    0.23772624135017395,
+                    0.23724719882011414,
+                    0.19265492260456085
+                ],
+                "season_vector": [
+                    0.22513484954833984,
+                    0.23065721988677979,
+                    0.2306458204984665,
+                    0.22786274552345276
+                ],
+                "mood_vector": [
+                    0.21946808695793152,
+                    0.24896347522735596,
+                    0.212704598903656
+                ],
+                "pattern_vector": [
+                    0.226749449968338,
+                    0.15524527430534363,
+                    0.14800679683685303,
+                    0.13816362619400024
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2106379389&srsltid=AfmBOoou8Y2Wx_o3wSStaQ3iIovMDS3OtzoH5bcZiUSgr7lVJdQm66DU",
+        "product_name": "[MEN] 데님 오버자켓",
+        "product_price": "499,900원",
+        "discount_rate": "0%",
+        "final_price": "499,900원",
+        "brand_name": "STUDIO TOMBOY",
+        "brand_image": null,
+        "category": "아우터",
+        "category_sub": "트러커 재킷",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_trucker_0007_01.jpg",
+        "product_images_2": null,
+        "product_images_3": null,
+        "product_images_4": null,
+        "product_code": "manual_trucker_0007",
+        "heart_cnt": null,
+        "numof_views": null,
+        "total_sales": null,
+        "review_cnt": null,
+        "review_rating": null,
+        "review1": null,
+        "review2": null,
+        "review3": null,
+        "review4": null,
+        "review5": null,
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    89,
+                    36,
+                    514,
+                    551
+                ],
+                "score": 0.9713833332061768,
+                "category": "long sleeve top",
+                "color_vector": [
+                    105,
+                    83,
+                    141
+                ],
+                "texture_vector": [
+                    0.237944558262825,
+                    0.210846945643425,
+                    0.15866221487522125
+                ],
+                "season_vector": [
+                    0.22511056065559387,
+                    0.2180919349193573,
+                    0.21327923238277435,
+                    0.21144215762615204
+                ],
+                "mood_vector": [
+                    0.22070664167404175,
+                    0.21768388152122498,
+                    0.20703153312206268
+                ],
+                "pattern_vector": [
+                    0.1768752932548523,
+                    0.1396333873271942,
+                    0.10292172431945801,
+                    0.13909569382667542
+                ]
+            }
+        ]
+    },
+    {
+        "detail_url": "https://m.mskshop.net/product/stillnessamunzen-check-shirtdeep-green/4563/",
+        "product_name": "STILLNESS Amunzen Check Shirt",
+        "product_price": "290,000원",
+        "discount_rate": "0%",
+        "final_price": "290,000원",
+        "brand_name": "STILLNESS",
+        "brand_image": null,
+        "category": "상의",
+        "category_sub": "피케/카라 티셔츠",
+        "product_images_1": "C:/ongdal/local_data/product_combined_images/manual_collarshirts_0001_01.jpg",
+        "product_images_2": null,
+        "product_images_3": null,
+        "product_images_4": null,
+        "product_code": "manual_collarshirts_0001",
+        "heart_cnt": null,
+        "numof_views": null,
+        "total_sales": null,
+        "review_cnt": null,
+        "review_rating": null,
+        "review1": null,
+        "review2": null,
+        "review3": null,
+        "review4": null,
+        "review5": null,
+        "gorgeous": 1,
+        "clothes": [
+            {
+                "box": [
+                    150,
+                    82,
+                    861,
+                    914
+                ],
+                "score": 0.9944133162498474,
+                "category": "long sleeve top",
+                "color_vector": [
+                    121,
+                    23,
+                    37
+                ],
+                "texture_vector": [
+                    0.23127615451812744,
+                    0.23005995154380798,
+                    0.18530654907226562
+                ],
+                "season_vector": [
+                    0.2216886281967163,
+                    0.22124111652374268,
+                    0.23462024331092834,
+                    0.224861741065979
+                ],
+                "mood_vector": [
+                    0.23256078362464905,
+                    0.23090609908103943,
+                    0.1973932683467865
+                ],
+                "pattern_vector": [
+                    0.20385028421878815,
+                    0.1941213607788086,
+                    0.1677822321653366,
+                    0.2491500824689865
+                ]
+            }
+        ]
+    }
+]
